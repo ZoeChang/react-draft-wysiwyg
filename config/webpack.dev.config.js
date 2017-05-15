@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 const devConfigs = {
-  devtool: 'source-map',
+  devtool: 'eval',
   entry: [
     './js/playground/index',
   ],
