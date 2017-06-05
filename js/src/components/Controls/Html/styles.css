@@ -1,0 +1,11 @@
+.rdw-html-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.rdw-html-icon-wrapper {
+  width: 18px;
+  height: 18px;
+}

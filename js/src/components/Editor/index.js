@@ -1,6 +1,5 @@
-/* @flow */
-
 import React, { Component } from 'react';
+import { Map } from 'immutable';
 import PropTypes from 'prop-types';
 import {
   Editor,
@@ -22,13 +21,15 @@ import FocusHandler from '../../event-handler/focus';
 import KeyDownHandler from '../../event-handler/keyDown';
 import SuggestionHandler from '../../event-handler/suggestions';
 import { blockStyleFn } from '../../Utils/BlockStyle';
+import { convertDraftToHTML, convertHTMLToDraft } from '../../Utils/draftHTMLConverter';
 import { mergeRecursive } from '../../utils/toolbar';
 import { hasProperty, filter } from '../../utils/common';
 import Controls from '../Controls';
 import getLinkDecorator from '../../Decorators/Link';
 import getMentionDecorators from '../../decorators/Mention';
 import getHashtagDecorator from '../../decorators/HashTag';
-import getBlockRenderFunc from '../../renderer';
+import getBlockRenderFunc from '../../Renderer';
+import extendedBlockRenderMap from '../../CustomBlock';
 import defaultToolbar from '../../config/defaultToolbar';
 import localeTranslations from '../../i18n';
 import './styles.css';
@@ -95,6 +96,9 @@ export default class WysiwygEditor extends Component {
     this.state = {
       editorState: undefined,
       editorFocused: false,
+      tableEdits: Map(),
+      isHtmlMode: false,
+      htmlEditorCacheString: undefined,
       toolbar,
     };
     this.wrapperId = `rdw-wrapper${Math.floor(Math.random() * 10000)}`;
@@ -105,6 +109,8 @@ export default class WysiwygEditor extends Component {
       isImageAlignmentEnabled: this.isImageAlignmentEnabled,
       getEditorState: this.getEditorState,
       onChange: this.onChange,
+      tableEditsChange: this.tableEditsChange,
+      tableEdits: this.state.tableEdits,
     }, props.customBlockRenderFunc);
     this.editorProps = this.filterEditorProps(props);
     this.customStyleMap = getCustomStyleMap();
@@ -274,6 +280,25 @@ export default class WysiwygEditor extends Component {
 
   isImageAlignmentEnabled = () => this.state.toolbar.image.alignmentEnabled;
 
+  tableEditsChange = (tableEdits) => {
+    this.setState({ tableEdits });
+  }
+
+  onHtmlChange = (event) => {
+    const htmlString = event.target.value
+    this.setState({ htmlEditorCacheString: htmlString })
+  }
+
+  onToggleHtmlMode = () => {
+    if (this.state.isHtmlMode) {
+      const editorState = EditorState.createWithContent(convertHTMLToDraft(this.state.htmlEditorCacheString))
+      this.onChange(editorState)
+    }
+    this.setState({
+      isHtmlMode: !this.state.isHtmlMode
+    })
+  }
+
   createEditorState = (compositeDecorator) => {
     let editorState;
     if (hasProperty(this.props, 'editorState')) {
@@ -363,11 +388,26 @@ export default class WysiwygEditor extends Component {
     }
   };
 
+  htmlRenderer: Function = () => {
+    const { editorState } = this.state
+    const editorContent = editorState.getCurrentContent()
+    if (!editorContent) { return null }
+    return (
+      <textarea
+        className="playground-content no-focus"
+        defaultValue={convertDraftToHTML(editorContent)}
+        onChange={this.onHtmlChange}
+      />
+    )
+  }
+
   render() {
     const {
       editorState,
       editorFocused,
       toolbar,
+      tableEdits,
+      isHtmlMode
      } = this.state;
     const {
       locale,
@@ -391,6 +431,8 @@ export default class WysiwygEditor extends Component {
       editorState,
       onChange: this.onChange,
       translations: { ...localeTranslations[locale || newLocale], ...translations },
+      onToggleHtmlMode: this.onToggleHtmlMode,
+      isHtmlMode
     }
 
     return (
@@ -427,7 +469,11 @@ export default class WysiwygEditor extends Component {
         }
         <div
           ref={this.setWrapperReference}
-          className={classNames('rdw-editor-main', editorClassName)}
+          className={classNames(
+            'rdw-editor-main',
+            editorClassName,
+            isHtmlMode ? 'editor-invisible' : ''
+          )}
           style={editorStyle}
           onClick={this.focusEditor}
           onFocus={this.onEditorFocus}
@@ -446,11 +492,16 @@ export default class WysiwygEditor extends Component {
             customStyleMap={getCustomStyleMap()}
             handleReturn={this.handleReturn}
             blockRendererFn={this.blockRendererFn}
+            blockRenderMap={extendedBlockRenderMap}
             handleKeyCommand={this.handleKeyCommand}
             ariaLabel={ariaLabel || 'rdw-editor'}
+            readOnly={!!tableEdits.count()}
             {...this.editorProps}
           />
         </div>
+        {
+          isHtmlMode && this.htmlRenderer()
+        }
       </div>
     );
   }

@@ -1,0 +1,21 @@
+.editor-table {
+  border-collapse: collapse;
+  border: 1px solid #111;
+}
+
+.editor-table-tr {
+  height: 25px;
+}
+
+.editor-table-td {
+  width: 150px;
+  background-color: #fff;
+  border: 1px solid #111;
+
+  cursor: text;
+}
+
+.editor-table-input {
+  width: 95%;
+  height: 25px;
+}

@@ -2,11 +2,13 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import draftToHtml from 'draftjs-to-html'; // eslint-disable-line import/no-extraneous-dependencies
+import { convertToHTML } from 'draft-convert';
+import { convertDraftToHTML, convertHTMLToDraft } from '../src/Utils/draftHTMLConverter';
 import draftToMarkdown from 'draftjs-to-markdown'; // eslint-disable-line import/no-extraneous-dependencies
 import {
   convertFromHTML,
   convertToRaw,
+  convertFromRaw,
   ContentState,
   EditorState,
 } from 'draft-js';
@@ -25,8 +27,9 @@ class TestOption2 extends Component {
   }
 }
 
-const contentBlocks = convertFromHTML('<p><p>Lorem ipsum ' +
-      'dolor sit amet, consectetur adipiscing elit. Mauris tortor felis, volutpat sit amet ' +
+  const htmlToDraftContentState = convertToRaw(
+    convertHTMLToDraft('<p><span style="color:rgb(97,189,109);font-size:18px;background-color:rgb(247,218,100)">Lorem</span> ' +
+      '<a href="goolge.com" target="_self">dolor</a> sit amet, consectetur adipiscing elit. Mauris tortor felis, volutpat sit amet ' +
       'maximus nec, tempus auctor diam. Nunc odio elit,  ' +
       'commodo quis dolor in, sagittis scelerisque nibh. ' +
       'Suspendisse consequat, sapien sit amet pulvinar  ' +
@@ -34,14 +37,62 @@ const contentBlocks = convertFromHTML('<p><p>Lorem ipsum ' +
       'turpis est sit amet nulla. Vestibulum lacinia mollis  ' +
       'accumsan. Vivamus porta cursus libero vitae mattis. ' +
       'In gravida bibendum orci, id faucibus felis molestie ac.  ' +
-      'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p><img src="http://i.imgur.com/aMtBIep.png" /></p>');
+      'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p><img src="http://i.imgur.com/aMtBIep.png" />' +
+      '<div><table><tbody><tr><td>table</td><td>come</td><td>will</td></tr><tr><td>it</td><td>cool</td></tr></tbody></table></div>'
+      )
+    );
 
-const contentState = ContentState.createFromBlockArray(contentBlocks);
-
-// const rawContentState = convertToRaw(contentState);
-
-const rawContentState = {"entityMap":{},"blocks":[{"key":"3q6ro","text":"testing","type":"header-six","depth":0,"inlineStyleRanges":[{"offset":0,"length":7,"style":"fontsize-24"},{"offset":0,"length":7,"style":"fontfamily-Times New Roman"},{"offset":0,"length":7,"style":"color-rgb(209,72,65)"}],"entityRanges":[],"data":{}}]};
-// {"entityMap":{"0":{"type":"IMAGE","mutability":"MUTABLE","data":{"src":"http://i.imgur.com/aMtBIep.png","height":"auto","width":"100%"}}},"blocks":[{"key":"9unl6","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"95kn","text":" ","type":"atomic","depth":0,"inlineStyleRanges":[],"entityRanges":[{"offset":0,"length":1,"key":0}],"data":{}},{"key":"7rjes","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]};
+const rawContentState = {
+  "entityMap": {
+    "0": {
+      "type": "TABLE",
+      "mutability": "IMMUTABLE",
+      "data": {
+        grids: [
+          ['table', 'come'],
+          ['it', 'cool']
+        ]
+      }
+    }
+  },
+  blocks: [
+    {
+      "key":"3q6ro",
+      "text":"testing",
+      "type":"unstyled",
+      "depth":0,
+      "inlineStyleRanges":[
+        {"offset":0,"length":7,"style":"fontsize-24"},{"offset":0,"length":7,"style":"fontfamily-Times New Roman"},{ offset: 0, 'length':7,style:'color-rgb(209,72,65)'}
+      ],
+      entityRanges:[],
+      data: {}
+    },
+    {
+      "key": "fa3kv",
+      "text": " ",
+      "type": "atomic",
+      "depth": 0,
+      "inlineStyleRanges": [],
+      "entityRanges": [
+        {
+          "offset": 0,
+          "length": 1,
+          "key": 0
+        }
+      ],
+      "data": {}
+    },
+    {
+      "key":"f16va",
+      "text":"",
+      "type":"unstyled",
+      "depth":0,
+      "inlineStyleRanges":[],
+      entityRanges:[],
+      data: {}
+    },
+  ],
+};
 
 class Playground extends Component {
 
@@ -101,11 +152,10 @@ class Playground extends Component {
         </div>
         <button onClick={this.clearContent} tabIndex={0}>Force Editor State</button>
         <div className="playground-editorSection">
-          <input tabIndex={0} />
           <div className="playground-editorWrapper">
             <Editor
               tabIndex={0}
-              initialContentState={rawContentState}
+              initialContentState={htmlToDraftContentState}
               toolbarClassName="playground-toolbar"
               wrapperClassName="playground-wrapper"
               editorClassName="playground-editor"
@@ -142,15 +192,18 @@ class Playground extends Component {
               }}
             />
           </div>
-          <input tabIndex={0} />
-          <textarea
-            className="playground-content no-focus"
-            value={draftToHtml(editorContent)}
-          />
-          <textarea
+          { editorContent &&
+            <textarea
+              className="playground-content no-focus"
+              value={
+                convertDraftToHTML(convertFromRaw(editorContent))
+              }
+            />
+          }
+          {/* <textarea
             className="playground-content no-focus"
             value={draftToMarkdown(editorContent)}
-          />
+          /> */}
           <textarea
             className="playground-content no-focus"
             value={JSON.stringify(editorContent)}
