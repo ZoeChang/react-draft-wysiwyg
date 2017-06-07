@@ -98,7 +98,7 @@ export default class WysiwygEditor extends Component {
       editorFocused: false,
       tableEdits: Map(),
       isHtmlMode: false,
-      htmlEditorCacheString: undefined,
+      tableHTMLCacheString: '',
       toolbar,
     };
     this.wrapperId = `rdw-wrapper${Math.floor(Math.random() * 10000)}`;
@@ -218,14 +218,15 @@ export default class WysiwygEditor extends Component {
 
   onChange: Function = (editorState: Object): void => {
     const { readOnly, onEditorStateChange } = this.props;
+    const editorStateWithDecorator = EditorState.set(editorState, { decorator: this.compositeDecorator })
     if (!readOnly) {
       if (onEditorStateChange) {
-        onEditorStateChange(editorState);
+        onEditorStateChange(editorStateWithDecorator);
       }
       if (!hasProperty(this.props, 'editorState')) {
-        this.setState({ editorState }, this.afterChange(editorState));
+        this.setState({ editorState: editorStateWithDecorator }, this.afterChange(editorStateWithDecorator));
       } else {
-        this.afterChange(editorState);
+        this.afterChange(editorStateWithDecorator);
       }
     }
   };
@@ -286,14 +287,27 @@ export default class WysiwygEditor extends Component {
 
   onHtmlChange = (event) => {
     const htmlString = event.target.value
-    this.setState({ htmlEditorCacheString: htmlString })
+    this.setState({ tableHTMLCacheString: htmlString })
   }
 
   onToggleHtmlMode = () => {
     if (this.state.isHtmlMode) {
-      const editorState = EditorState.createWithContent(convertHTMLToDraft(this.state.htmlEditorCacheString))
+      const editorState = EditorState.createWithContent(
+        convertHTMLToDraft(this.state.tableHTMLCacheString)
+      )
       this.onChange(editorState)
     }
+
+    if (!this.state.isHtmlMode) {
+      this.setState({
+        tableHTMLCacheString: convertDraftToHTML(
+          this.state.editorState.getCurrentContent()
+        )
+        // to replace extra "line break" create from draftjsHTMLConverter
+        .split('<br/>').join('')
+      })
+    }
+
     this.setState({
       isHtmlMode: !this.state.isHtmlMode
     })
@@ -394,7 +408,7 @@ export default class WysiwygEditor extends Component {
     if (!editorContent) { return null }
     return (
       <textarea
-        className="playground-content no-focus"
+        className="editor-html no-focus"
         defaultValue={convertDraftToHTML(editorContent)}
         onChange={this.onHtmlChange}
       />

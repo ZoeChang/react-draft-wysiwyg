@@ -37,8 +37,9 @@ class TestOption2 extends Component {
       'turpis est sit amet nulla. Vestibulum lacinia mollis  ' +
       'accumsan. Vivamus porta cursus libero vitae mattis. ' +
       'In gravida bibendum orci, id faucibus felis molestie ac.  ' +
-      'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p><img src="http://i.imgur.com/aMtBIep.png" />' +
-      '<div><table><tbody><tr><td>table</td><td>come</td><td>will</td></tr><tr><td>it</td><td>cool</td></tr></tbody></table></div>'
+      'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p>' +
+      '<img src="http://i.imgur.com/aMtBIep.png" /><p></p>' +
+      '<table><tbody><tr><td>table</td><td>come</td><td>will</td></tr><tr><td>it</td><td>cool</td></tr></tbody></table>'
       )
     );
 

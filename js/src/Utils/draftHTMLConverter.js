@@ -4,8 +4,9 @@ import { convertToHTML, convertFromHTML } from 'draft-convert'
 
 export function convertDraftToHTML(editorContent) {
   const styleToHTML = (style) => {
-    const colorPattern = /color/
-    const fontsizePattern = /fontsize/
+    const colorPattern = /^color/
+    const bgColorPattern = /^bgcolor/
+    const fontsizePattern = /^fontsize/
 
     if (colorPattern.test(style)) {
       const colorStyle = style.replace('color-', '')
@@ -13,6 +14,14 @@ export function convertDraftToHTML(editorContent) {
         <span style={{color: colorStyle}} />
       )
     }
+
+    if (bgColorPattern.test(style)) {
+      const bgColorStyle = style.replace('bgcolor-', '')
+      return (
+        <span style={{backgroundColor: bgColorStyle}} />
+      )
+    }
+
     if (fontsizePattern.test(style)) {
       const fontSize = style.split('-')[1] || '16'
       return (
@@ -23,9 +32,19 @@ export function convertDraftToHTML(editorContent) {
     return;
   }
 
+  const blockToHTML = next => (block, ...args) => {
+    if (block.type === 'atomic') {
+      return {
+        start: '<figure>',
+        end: '</figure>'
+      }
+    }
+    return next(block)
+  }
+  blockToHTML.__isMiddleware = true
+
   const entityToHTML = (entity, originalText) => {
     switch (entity.type) {
-
       case 'TABLE': {
         const grids = entity.data.grids
         return (
@@ -76,11 +95,7 @@ export function convertDraftToHTML(editorContent) {
 
   return convertToHTML({
     styleToHTML,
-    blockToHTML: (block) => {
-      if (block.type === 'atomic') {
-        return <div />;
-      }
-    },
+    blockToHTML,
     entityToHTML,
   })(editorContent)
 }
@@ -155,7 +170,7 @@ export function convertHTMLToDraft(html) {
     }
   }
 
-  const htmlToBlock = (nodeName, node) => {
+  const htmlToBlock = next => (nodeName, ...args) => {
     switch (nodeName) {
       case 'img':
         return {
@@ -166,9 +181,12 @@ export function convertHTMLToDraft(html) {
           type: 'atomic',
       };
       default:
-        return undefined;
+        return {
+          type: 'unstyled',
+        };
     }
   }
+  htmlToBlock.__isMiddleware = true
 
   return convertFromHTML({
     htmlToStyle,
