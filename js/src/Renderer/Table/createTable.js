@@ -35,7 +35,8 @@ const createTable = () => class Table extends Component {
 
   onClickTd = (focusRow, focusColumn) => {
     const { blockProps, block } = this.props
-    const { onStartEdit } = blockProps;
+    const { onStartEdit, isReadOnly } = blockProps;
+    if (isReadOnly()) return 
     const toFocused = `${focusRow}-${focusColumn}`
     this.setState(
       {

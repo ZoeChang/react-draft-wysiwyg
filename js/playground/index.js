@@ -103,6 +103,13 @@ class Playground extends Component {
     editorState: EditorState.createEmpty(),
   };
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      editorState: EditorState.createWithContent(convertFromRaw(htmlToDraftContentState)),
+    }
+  }
+
   onEditorChange: Function = (editorContent) => {
     this.setState({
       editorContent,
@@ -156,7 +163,7 @@ class Playground extends Component {
           <div className="playground-editorWrapper">
             <Editor
               tabIndex={0}
-              initialContentState={htmlToDraftContentState}
+              editorState={editorState}
               toolbarClassName="playground-toolbar"
               wrapperClassName="playground-wrapper"
               editorClassName="playground-editor"
@@ -177,6 +184,7 @@ class Playground extends Component {
               onBlur={() => {console.log('blur')}}
               onTab={() => {console.log('tab'); return true;}}
               localization={{ locale: 'zh', translations: {'generic.add': 'Test-Add'} }}
+              readOnly={false}
               mention={{
                 separator: ' ',
                 trigger: '@',
@@ -193,11 +201,11 @@ class Playground extends Component {
               }}
             />
           </div>
-          { editorContent &&
+          { editorState &&
             <textarea
               className="playground-content no-focus"
               value={
-                convertDraftToHTML(convertFromRaw(editorContent))
+                convertDraftToHTML(editorState.getCurrentContent())
               }
             />
           }
@@ -207,7 +215,7 @@ class Playground extends Component {
           /> */}
           <textarea
             className="playground-content no-focus"
-            value={JSON.stringify(editorContent)}
+            value={JSON.stringify(convertToRaw(editorState.getCurrentContent()))}
           />
         </div>
       </div>

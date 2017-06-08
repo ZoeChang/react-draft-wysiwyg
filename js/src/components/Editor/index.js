@@ -88,6 +88,7 @@ export default class WysiwygEditor extends Component {
     stripPastedStyles: false,
     localization: { locale: 'en', translations: {} },
     customDecorators: [],
+    onEditorStateChange: () => {},
   }
 
   constructor(props) {
@@ -132,10 +133,13 @@ export default class WysiwygEditor extends Component {
 
   componentWillReceiveProps(props) {
     const newState = {};
-    if (this.props.toolbar !== props.toolbar) {
-      const toolbar = mergeRecursive(defaultToolbar, props.toolbar);
-      newState.toolbar = toolbar;
-    }
+    // prevent too much logic operation during react update cycle
+
+    // if (this.props.toolbar !== props.toolbar) {
+    //   const toolbar = mergeRecursive(defaultToolbar, props.toolbar);
+    //   newState.toolbar = toolbar;
+    // }
+
     if (hasProperty(props, 'editorState') && this.props.editorState !== props.editorState) {
       if (props.editorState) {
         newState.editorState = EditorState.set(
@@ -145,24 +149,21 @@ export default class WysiwygEditor extends Component {
       } else {
         newState.editorState = EditorState.createEmpty(this.compositeDecorator);
       }
-    } else if (hasProperty(props, 'contentState') && this.props.contentState !== props.contentState) {
-      if (props.contentState) {
-        const newEditorState = this.changeEditorState(props.contentState);
-        if (newEditorState) {
-          newState.editorState = newEditorState;
-        }
-      } else {
-        newState.editorState = EditorState.createEmpty(this.compositeDecorator);
-      }
+
+      this.setState(newState);
     }
+
     if (newState.editorState &&
       (this.props.editorState && this.props.editorState.getCurrentContent().getBlockMap().size) !==
       (newState.editorState && newState.editorState.getCurrentContent().getBlockMap().size)) {
       extractInlineStyle(newState.editorState);
     }
-    this.setState(newState);
-    this.editorProps = this.filterEditorProps(props);
-    this.customStyleMap = getCustomStyleMap();
+
+    // prevent too much logic operation during react update cycle
+
+    // this.setState(newState);
+    // this.editorProps = this.filterEditorProps(props);
+    // this.customStyleMap = getCustomStyleMap();
   }
 
   onEditorBlur: Function = (): void => {
@@ -217,20 +218,14 @@ export default class WysiwygEditor extends Component {
   };
 
   onChange: Function = (editorState: Object): void => {
-    const { readOnly, onEditorStateChange } = this.props;
+    const { onEditorStateChange } = this.props;
     const editorStateWithDecorator = EditorState.set(editorState, { decorator: this.compositeDecorator })
-    if (!readOnly) {
-      if (onEditorStateChange) {
-        onEditorStateChange(editorStateWithDecorator);
-      }
-      if (!hasProperty(this.props, 'editorState')) {
-        this.setState({ editorState: editorStateWithDecorator }, this.afterChange(editorStateWithDecorator));
-      } else {
-        this.afterChange(editorStateWithDecorator);
-      }
+    if (!this.isReadOnly()) {
+      onEditorStateChange(editorStateWithDecorator);
     }
   };
 
+  // afterChange is deprecated
   afterChange: Function = (editorState): void => {
     setTimeout(() => {
       const { onChange, onContentStateChange } = this.props;
@@ -277,7 +272,7 @@ export default class WysiwygEditor extends Component {
 
   getSuggestions = () => this.props.mention && this.props.mention.suggestions;
 
-  isReadOnly = () => this.props.readOnly;
+  isReadOnly = () => !!this.state.tableEdits.count() || this.props.readOnly;
 
   isImageAlignmentEnabled = () => this.state.toolbar.image.alignmentEnabled;
 
@@ -420,7 +415,6 @@ export default class WysiwygEditor extends Component {
       editorState,
       editorFocused,
       toolbar,
-      tableEdits,
       isHtmlMode
      } = this.state;
     const {
@@ -437,7 +431,6 @@ export default class WysiwygEditor extends Component {
       wrapperStyle,
       uploadCallback,
       ariaLabel,
-      ...props,
     } = this.props;
 
     const controlProps = {
@@ -509,7 +502,7 @@ export default class WysiwygEditor extends Component {
             blockRenderMap={extendedBlockRenderMap}
             handleKeyCommand={this.handleKeyCommand}
             ariaLabel={ariaLabel || 'rdw-editor'}
-            readOnly={!!tableEdits.count()}
+            readOnly={this.isReadOnly()}
             {...this.editorProps}
           />
         </div>

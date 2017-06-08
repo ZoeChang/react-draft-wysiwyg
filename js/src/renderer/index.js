@@ -4,7 +4,10 @@ import createTable from './Table/createTable';
 import { EditorState } from 'draft-js'
 
 const getBlockRenderFunc = (config, customBlockRenderer) => {
-  const { tableEditsChange, tableEdits, onChange: onEditorChange } = config;
+  const {
+    tableEditsChange, tableEdits, onChange: onEditorChange,
+    isReadOnly
+  } = config;
   return (block) => {
     if (typeof customBlockRenderer === 'function') {
       const renderedComponent = customBlockRenderer(block, config, config.getEditorState);
@@ -29,6 +32,7 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
           component: createTable(),
           editable: false,
           props: {
+            isReadOnly,
             entity,
             onStartEdit: (blockKey) => {
               tableEditsChange(tableEdits.set(blockKey, true));
