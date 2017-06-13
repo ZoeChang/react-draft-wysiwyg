@@ -193,5 +193,5 @@ export function convertHTMLToDraft(html) {
     htmlToEntity,
     // textToEntity: (text) => {},
     htmlToBlock,
-  })(html);
+  })(html, {flat: true});
 }

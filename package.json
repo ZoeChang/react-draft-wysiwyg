@@ -21,7 +21,7 @@
     "chai": "^3.5.0",
     "cross-env": "^3.2.3",
     "css-loader": "^0.27.1",
-    "draft-js": "^0.10.0",
+    "draft-js": "^0.10.1",
     "draftjs-to-html": "^0.7.1",
     "draftjs-to-markdown": "^0.4.0",
     "enzyme": "^2.7.1",

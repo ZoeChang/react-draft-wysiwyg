@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { EditorState } from 'draft-js'
+import Immutable from 'immutable'
 import { ContentState } from 'draft-js'
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 
@@ -20,6 +22,15 @@ const createTable = () => class Table extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      !Immutable.is(nextProps.contentState, this.props.contentState) ||
+      nextState.isEditing !== this.state.isEditing ||
+      nextState.focusRow !== this.state.focusRow ||
+      nextState.focusColumn !== this.state.focusColumn
+    )
+  }
+
   componentDidUpdate(preProps, preState) {
     const { toFocused } = this.state
     if (
@@ -36,7 +47,7 @@ const createTable = () => class Table extends Component {
   onClickTd = (focusRow, focusColumn) => {
     const { blockProps, block } = this.props
     const { onStartEdit, isReadOnly } = blockProps;
-    if (isReadOnly()) return 
+    if (isReadOnly()) return
     const toFocused = `${focusRow}-${focusColumn}`
     this.setState(
       {
@@ -49,6 +60,12 @@ const createTable = () => class Table extends Component {
         onStartEdit(block.getKey())
       }
     )
+  }
+
+  onClickTdEventHandler = (event, rowIndex, columnIndex) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.onClickTd(rowIndex, columnIndex)
   }
 
   getEditedContent: Function = (texValue): ContentState => {
@@ -90,8 +107,16 @@ const createTable = () => class Table extends Component {
     }
   }
 
-  onTdInputChange = evt => {
-    // const value = evt.target.value;
+  onKeyDownTdInput = (event) => {
+    event.stopPropagation()
+  }
+
+  onKeyPressTdInput = (event) => {
+    event.stopPropagation()
+  }
+
+  onKeyUpTdInput = (event) => {
+    event.stopPropagation()
   }
 
   render() {
@@ -114,22 +139,24 @@ const createTable = () => class Table extends Component {
                     <td
                       key={columnIndex}
                       className='editor-table-td'
-                      onClick={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        this.onClickTd(rowIndex, columnIndex)
-                      }}
+                      onClick={(event) => this.onClickTdEventHandler(event, rowIndex, columnIndex)}
                     >
                       {
                         isEditing && `${focusRow}-${focusColumn}` === `${rowIndex}-${columnIndex}`
                           ? (
                               <input
+                                type="text"
                                 ref={`${rowIndex}-${columnIndex}`}
                                 key={`${rowIndex}-${columnIndex}`}
                                 className='editor-table-input'
                                 defaultValue={column}
-                                onChange={this.onTdInputChange}
+                                onKeyDown={this.onKeyDownTdInput}
+                                onKeyPress={this.onKeyPressTdInput}
+                                onKeyUp={this.onKeyUpTdInput}
                                 onBlur={this.onTdBlur}
+                                onCopy={(event) => event.stopPropagation()}
+                                onCut={(event) => event.stopPropagation()}
+                                onPaste={(event) => event.stopPropagation()}
                               />
                             )
                           : column

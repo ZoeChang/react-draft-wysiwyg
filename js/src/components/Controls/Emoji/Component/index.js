@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; 
 import classNames from 'classnames';
 
-import { stopPropagation } from '../../../../utils/common';
+import { stopPropagation } from '../../../../Utils/common';
 import Option from '../../../Option';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 

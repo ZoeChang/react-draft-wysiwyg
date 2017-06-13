@@ -22,8 +22,9 @@ import KeyDownHandler from '../../event-handler/keyDown';
 import SuggestionHandler from '../../event-handler/suggestions';
 import { blockStyleFn } from '../../Utils/BlockStyle';
 import { convertDraftToHTML, convertHTMLToDraft } from '../../Utils/draftHTMLConverter';
-import { mergeRecursive } from '../../utils/toolbar';
-import { hasProperty, filter } from '../../utils/common';
+import htmlBeautifier from '../../Utils/htmlBeauty';
+import { mergeRecursive } from '../../Utils/toolbar';
+import { hasProperty, filter } from '../../Utils/common';
 import Controls from '../Controls';
 import getLinkDecorator from '../../Decorators/Link';
 import getMentionDecorators from '../../decorators/Mention';
@@ -150,18 +151,12 @@ export default class WysiwygEditor extends Component {
         newState.editorState = EditorState.createEmpty(this.compositeDecorator);
       }
 
-      this.setState(newState);
-    }
-
-    if (newState.editorState &&
-      (this.props.editorState && this.props.editorState.getCurrentContent().getBlockMap().size) !==
-      (newState.editorState && newState.editorState.getCurrentContent().getBlockMap().size)) {
       extractInlineStyle(newState.editorState);
+      this.setState(newState);
     }
 
     // prevent too much logic operation during react update cycle
 
-    // this.setState(newState);
     // this.editorProps = this.filterEditorProps(props);
     // this.customStyleMap = getCustomStyleMap();
   }
@@ -272,11 +267,14 @@ export default class WysiwygEditor extends Component {
 
   getSuggestions = () => this.props.mention && this.props.mention.suggestions;
 
-  isReadOnly = () => !!this.state.tableEdits.count() || this.props.readOnly;
+  isReadOnly = () => {
+    return !!this.state.tableEdits.count() || this.props.readOnly
+  };
 
   isImageAlignmentEnabled = () => this.state.toolbar.image.alignmentEnabled;
 
   tableEditsChange = (tableEdits) => {
+    this.setState({ tableEditsCount: tableEdits.count() })
     this.setState({ tableEdits });
   }
 
@@ -287,8 +285,15 @@ export default class WysiwygEditor extends Component {
 
   onToggleHtmlMode = () => {
     if (this.state.isHtmlMode) {
+      const trimmed = this.state.tableHTMLCacheString
+      .replace(/\s+/g, function(spaces) {
+          return spaces === '\t' ? '\t' : spaces.replace(/(^|\xA0+)[^\xA0]+/g, '$1 ');
+        })
+      .replace(/^\s+/g, '').replace(/\s+$/g, '')
+      .replace(/^\t+/g, '').replace(/\t+$/g, '')
+      .replace(/>\s/g, '>')
       const editorState = EditorState.createWithContent(
-        convertHTMLToDraft(this.state.tableHTMLCacheString)
+        convertHTMLToDraft(trimmed)
       )
       this.onChange(editorState)
     }
@@ -349,7 +354,7 @@ export default class WysiwygEditor extends Component {
       'localization', 'toolbarOnFocus', 'toolbar', 'toolbarCustomButtons', 'toolbarClassName',
       'editorClassName', 'toolbarHidden', 'wrapperClassName', 'toolbarStyle', 'editorStyle',
       'wrapperStyle', 'uploadCallback', 'onFocus', 'onBlur', 'onTab', 'mention', 'hashtag',
-      'ariaLabel', 'customBlockRenderFunc', 'customDecorators',
+      'ariaLabel', 'customBlockRenderFunc', 'customDecorators', 'readOnly'
     ]);
   }
 
@@ -401,10 +406,13 @@ export default class WysiwygEditor extends Component {
     const { editorState } = this.state
     const editorContent = editorState.getCurrentContent()
     if (!editorContent) { return null }
+    const uglyHtml = convertDraftToHTML(editorContent)
+    const beautifulHtml = htmlBeautifier(uglyHtml);
+
     return (
       <textarea
         className="editor-html no-focus"
-        defaultValue={convertDraftToHTML(editorContent)}
+        defaultValue={beautifulHtml}
         onChange={this.onHtmlChange}
       />
     )

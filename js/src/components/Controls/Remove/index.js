@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { EditorState, Modifier } from 'draft-js';
 import { getSelectionCustomInlineStyle } from 'draftjs-utils';
 
-import { forEach } from '../../../utils/common';
+import { forEach } from '../../../Utils/common';
 import LayoutComponent from './Component';
 
 export default class Remove extends Component {

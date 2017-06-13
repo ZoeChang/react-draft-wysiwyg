@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 
-import { stopPropagation } from '../../../utils/common';
+import { stopPropagation } from '../../../Utils/common';
 
 export default class Dropdown extends Component {
 

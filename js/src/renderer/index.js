@@ -1,7 +1,6 @@
 import Embedded from './Embedded';
 import getImageComponent from '../Renderer/Image';
 import createTable from './Table/createTable';
-import { EditorState } from 'draft-js'
 
 const getBlockRenderFunc = (config, customBlockRenderer) => {
   const {
@@ -32,6 +31,8 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
           component: createTable(),
           editable: false,
           props: {
+            onEditorChange,
+            editorState,
             isReadOnly,
             entity,
             onStartEdit: (blockKey) => {
@@ -43,14 +44,14 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
               // provided with newContentState in second argument will cause Editor/index.js
               // to re-render. Therefore, blockRendererFn will be triggered and thus
               // new table instance will be rendered.
-              if (newContentState) {
-                const newEditorState = EditorState.createWithContent(newContentState)
-                onEditorChange(
-                  EditorState.forceSelection(
-                    newEditorState, newEditorState.getSelection()
-                  )
-                )
-              }
+              // if (newContentState) {
+              //   const newEditorState = EditorState.createWithContent(newContentState)
+              //   onEditorChange(
+              //     EditorState.forceSelection(
+              //       newEditorState, newEditorState.getSelection()
+              //     )
+              //   )
+              // }
             },
             onRemove: () => {},
           },

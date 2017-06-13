@@ -37,3 +37,12 @@
   margin: 0px;
   background: transparent;
 }
+
+.rdw-editor-wrapper input:focus {
+  outline: none;
+  font-size: 15px;
+}
+
+.rdw-editor-wrapper textarea:focus {
+  outline: none;
+}

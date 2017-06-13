@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import Option from '../../../Option';
 import { Dropdown, DropdownOption } from '../../../Dropdown';
-import { getFirstIcon } from '../../../../utils/toolbar';
+import { getFirstIcon } from '../../../../Utils/toolbar';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 
 export default class TextAlign extends Component {

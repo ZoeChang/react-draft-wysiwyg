@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getSelectionInlineStyle } from 'draftjs-utils';
 import { RichUtils, EditorState, Modifier } from 'draft-js';
-import { forEach } from '../../../utils/common';
+import { forEach } from '../../../Utils/common';
 
 import LayoutComponent from './Component';
 
