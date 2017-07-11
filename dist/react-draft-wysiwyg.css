@@ -1006,8 +1006,8 @@
 
 @font-face {
   font-family: "editor";
-  src: url(static/media/editor.13f6d42d.eot);
-  src: url(static/media/editor.13f6d42d.eot#iefix) format("embedded-opentype"), url(static/media/editor.05334b3a.ttf) format("truetype"), url(static/media/editor.826f6d3c.woff) format("woff"), url(static/media/editor.7e045236.svg#editor) format("svg");
+  src: url(static/media/editor.eb3cf0c8.eot);
+  src: url(static/media/editor.eb3cf0c8.eot#iefix) format("embedded-opentype"), url(static/media/editor.1db4138a.ttf) format("truetype"), url(static/media/editor.fd230aea.woff) format("woff"), url(static/media/editor.05319a47.svg#editor) format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -1023,97 +1023,97 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-editor-html:before {
-	content: "\E900";
+	content: "\EA00";
 }
 
 .icon-editor-align-center:before {
-	content: "\E901";
+	content: "\EA01";
 }
 
 .icon-editor-align-justify:before {
-	content: "\E902";
+	content: "\EA02";
 }
 
 .icon-editor-align-left:before {
-	content: "\E903";
+	content: "\EA03";
 }
 
 .icon-editor-align-right:before {
-	content: "\E904";
+	content: "\EA04";
 }
 
 .icon-editor-bold:before {
   font-size: 12px;
-	content: "\E905";
+	content: "\EA05";
 }
 .icon-editor-color:before {
-	content: "\E906";
+	content: "\EA06";
 }
 .icon-editor-embedded:before {
-	content: "\E907";
+	content: "\EA07";
 }
 .icon-editor-emoji:before {
-	content: "\E908";
+	content: "\EA08";
 }
 .icon-editor-eraser:before {
-	content: "\E909";
+	content: "\EA09";
 }
 .icon-editor-font-size:before {
-	content: "\E90A";
+	content: "\EA0A";
 }
 .icon-editor-image:before {
-	content: "\E90B";
+	content: "\EA0B";
 }
 .icon-editor-indent:before {
-	content: "\E90C";
+	content: "\EA0C";
 }
 .icon-editor-italic:before {
-	content: "\E90D";
+	content: "\EA0D";
 }
 .icon-editor-link:before {
-	content: "\E90E";
+	content: "\EA0E";
 }
 .icon-editor-list-ordered:before {
-	content: "\E90F";
+	content: "\EA0F";
 }
 .icon-editor-list-unordered:before {
-	content: "\E910";
+	content: "\EA10";
 }
 .icon-editor-monospace:before {
-	content: "\E911";
+	content: "\EA11";
 }
 .icon-editor-openlink:before {
-	content: "\E912";
+	content: "\EA12";
 }
 .icon-editor-ordered:before {
-	content: "\E913";
+	content: "\EA13";
 }
 .icon-editor-outdent:before {
-	content: "\E914";
+	content: "\EA14";
 }
 .icon-editor-redo:before {
-	content: "\E915";
+	content: "\EA15";
 }
 .icon-editor-strikethrough:before {
-	content: "\E916";
+	content: "\EA16";
 }
 .icon-editor-subscript:before {
-	content: "\E917";
+	content: "\EA17";
 }
 .icon-editor-superscript:before {
-	content: "\E918";
+	content: "\EA18";
 }
 .icon-editor-underline:before {
-	content: "\E919";
+	content: "\EA19";
 }
 .icon-editor-undo:before {
-	content: "\E91A";
+	content: "\EA1A";
 }
 .icon-editor-unlink:before {
-	content: "\E91B";
+	content: "\EA1B";
 }
 .icon-editor-unordered:before {
-	content: "\E91C";
+	content: "\EA1C";
 }
 .rdw-editor-main {
   height: 100%;

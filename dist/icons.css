@@ -18,95 +18,95 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-editor-html:before {
-	content: "\e900";
+	content: "\ea00";
 }
 
 .icon-editor-align-center:before {
-	content: "\e901";
+	content: "\ea01";
 }
 
 .icon-editor-align-justify:before {
-	content: "\e902";
+	content: "\ea02";
 }
 
 .icon-editor-align-left:before {
-	content: "\e903";
+	content: "\ea03";
 }
 
 .icon-editor-align-right:before {
-	content: "\e904";
+	content: "\ea04";
 }
 
 .icon-editor-bold:before {
   font-size: 12px;
-	content: "\e905";
+	content: "\ea05";
 }
 .icon-editor-color:before {
-	content: "\e906";
+	content: "\ea06";
 }
 .icon-editor-embedded:before {
-	content: "\e907";
+	content: "\ea07";
 }
 .icon-editor-emoji:before {
-	content: "\e908";
+	content: "\ea08";
 }
 .icon-editor-eraser:before {
-	content: "\e909";
+	content: "\ea09";
 }
 .icon-editor-font-size:before {
-	content: "\e90a";
+	content: "\ea0a";
 }
 .icon-editor-image:before {
-	content: "\e90b";
+	content: "\ea0b";
 }
 .icon-editor-indent:before {
-	content: "\e90c";
+	content: "\ea0c";
 }
 .icon-editor-italic:before {
-	content: "\e90d";
+	content: "\ea0d";
 }
 .icon-editor-link:before {
-	content: "\e90e";
+	content: "\ea0e";
 }
 .icon-editor-list-ordered:before {
-	content: "\e90f";
+	content: "\ea0f";
 }
 .icon-editor-list-unordered:before {
-	content: "\e910";
+	content: "\ea10";
 }
 .icon-editor-monospace:before {
-	content: "\e911";
+	content: "\ea11";
 }
 .icon-editor-openlink:before {
-	content: "\e912";
+	content: "\ea12";
 }
 .icon-editor-ordered:before {
-	content: "\e913";
+	content: "\ea13";
 }
 .icon-editor-outdent:before {
-	content: "\e914";
+	content: "\ea14";
 }
 .icon-editor-redo:before {
-	content: "\e915";
+	content: "\ea15";
 }
 .icon-editor-strikethrough:before {
-	content: "\e916";
+	content: "\ea16";
 }
 .icon-editor-subscript:before {
-	content: "\e917";
+	content: "\ea17";
 }
 .icon-editor-superscript:before {
-	content: "\e918";
+	content: "\ea18";
 }
 .icon-editor-underline:before {
-	content: "\e919";
+	content: "\ea19";
 }
 .icon-editor-undo:before {
-	content: "\e91a";
+	content: "\ea1a";
 }
 .icon-editor-unlink:before {
-	content: "\e91b";
+	content: "\ea1b";
 }
 .icon-editor-unordered:before {
-	content: "\e91c";
+	content: "\ea1c";
 }
