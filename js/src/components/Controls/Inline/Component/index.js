@@ -39,9 +39,8 @@ export default class Inline extends Component {
                 (style === 'MONOSPACE' && currentState['CODE'])
               }
             >
-              <img
-                alt=""
-                src={config[style].icon}
+              <i
+                className={config[style].icon}
               />
             </Option>
           )
@@ -88,8 +87,8 @@ export default class Inline extends Component {
                 (style === 'MONOSPACE' && currentState['CODE'])
               }
             >
-              <img
-                src={config[style].icon}
+              <i
+                className={config[style].icon}
                 alt=""
               />
             </DropdownOption>)

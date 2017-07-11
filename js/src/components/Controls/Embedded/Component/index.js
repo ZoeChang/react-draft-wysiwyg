@@ -123,9 +123,8 @@ class LayoutComponent extends Component {
           value="unordered-list-item"
           onClick={onExpandEvent}
         >
-          <img
-            src={icon}
-            alt=""
+          <i
+            className={icon}
           />
         </Option>
         {expanded ? this.rendeEmbeddedLinkModal() : undefined}

@@ -46,9 +46,8 @@ export default class History extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-history-control"
       >
-        <img
-          src={getFirstIcon(config)}
-          alt=""
+        <i
+          className={getFirstIcon(config)}
         />
         {options.indexOf('undo') >= 0 && <DropdownOption
           value="undo"
@@ -56,9 +55,8 @@ export default class History extends Component {
           disabled={undoDisabled}
           className={classNames('rdw-history-dropdownoption', undo.className)}
         >
-          <img
-            src={undo.icon}
-            alt=""
+          <i
+            className={undo.icon}
           />
         </DropdownOption>}
         {options.indexOf('redo') >= 0 && <DropdownOption
@@ -67,9 +65,8 @@ export default class History extends Component {
           disabled={redoDisabled}
           className={classNames('rdw-history-dropdownoption', redo.className)}
         >
-          <img
-            src={redo.icon}
-            alt=""
+          <i
+            className={redo.icon}
           />
         </DropdownOption>}
       </Dropdown>
@@ -89,9 +86,8 @@ export default class History extends Component {
           className={classNames(undo.className)}
           disabled={undoDisabled}
         >
-          <img
-            src={undo.icon}
-            alt=""
+          <i
+            className={undo.icon}
           />
         </Option>}
         {options.indexOf('redo') >= 0 && <Option
@@ -100,9 +96,8 @@ export default class History extends Component {
           className={classNames(redo.className)}
           disabled={redoDisabled}
         >
-          <img
-            src={redo.icon}
-            alt=""
+          <i
+            className={redo.icon}
           />
         </Option>}
       </div>

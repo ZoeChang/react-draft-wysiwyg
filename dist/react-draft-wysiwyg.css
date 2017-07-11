@@ -1003,6 +1003,118 @@
   width: 95%;
   height: 25px;
 }
+
+@font-face {
+  font-family: "editor";
+  src: url(static/media/editor.13f6d42d.eot);
+  src: url(static/media/editor.13f6d42d.eot#iefix) format("embedded-opentype"), url(static/media/editor.05334b3a.ttf) format("truetype"), url(static/media/editor.826f6d3c.woff) format("woff"), url(static/media/editor.7e045236.svg#editor) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="icon-"], [class*=" icon-"] {
+  font-family: "editor" !important;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-editor-html:before {
+	content: "\E900";
+}
+
+.icon-editor-align-center:before {
+	content: "\E901";
+}
+
+.icon-editor-align-justify:before {
+	content: "\E902";
+}
+
+.icon-editor-align-left:before {
+	content: "\E903";
+}
+
+.icon-editor-align-right:before {
+	content: "\E904";
+}
+
+.icon-editor-bold:before {
+  font-size: 12px;
+	content: "\E905";
+}
+.icon-editor-color:before {
+	content: "\E906";
+}
+.icon-editor-embedded:before {
+	content: "\E907";
+}
+.icon-editor-emoji:before {
+	content: "\E908";
+}
+.icon-editor-eraser:before {
+	content: "\E909";
+}
+.icon-editor-font-size:before {
+	content: "\E90A";
+}
+.icon-editor-image:before {
+	content: "\E90B";
+}
+.icon-editor-indent:before {
+	content: "\E90C";
+}
+.icon-editor-italic:before {
+	content: "\E90D";
+}
+.icon-editor-link:before {
+	content: "\E90E";
+}
+.icon-editor-list-ordered:before {
+	content: "\E90F";
+}
+.icon-editor-list-unordered:before {
+	content: "\E910";
+}
+.icon-editor-monospace:before {
+	content: "\E911";
+}
+.icon-editor-openlink:before {
+	content: "\E912";
+}
+.icon-editor-ordered:before {
+	content: "\E913";
+}
+.icon-editor-outdent:before {
+	content: "\E914";
+}
+.icon-editor-redo:before {
+	content: "\E915";
+}
+.icon-editor-strikethrough:before {
+	content: "\E916";
+}
+.icon-editor-subscript:before {
+	content: "\E917";
+}
+.icon-editor-superscript:before {
+	content: "\E918";
+}
+.icon-editor-underline:before {
+	content: "\E919";
+}
+.icon-editor-undo:before {
+	content: "\E91A";
+}
+.icon-editor-unlink:before {
+	content: "\E91B";
+}
+.icon-editor-unordered:before {
+	content: "\E91C";
+}
 .rdw-editor-main {
   height: 100%;
   width: 100%;

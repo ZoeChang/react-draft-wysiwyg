@@ -17,10 +17,8 @@ class Html extends Component {
         onClick={onToggleHtmlMode}
       >
         <div className={classNames(optionWrapperClasses)}>
-          <img
-            src={config.icon}
-            className="rdw-html-icon-wrapper"
-            alt=""
+          <i
+            className={config.icon}
           />
         </div>
       </div>

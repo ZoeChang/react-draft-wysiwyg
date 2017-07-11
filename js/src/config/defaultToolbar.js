@@ -1,29 +1,4 @@
-import bold from '../../../images/bold.svg';
-import italic from '../../../images/italic.svg';
-import underline from '../../../images/underline.svg';
-import strikethrough from '../../../images/strikethrough.svg';
-import monospace from '../../../images/monospace.svg';
-import fontSize from '../../../images/font-size.svg';
-import indent from '../../../images/indent.svg';
-import outdent from '../../../images/outdent.svg';
-import ordered from '../../../images/list-ordered.svg';
-import unordered from '../../../images/list-unordered.svg';
-import left from '../../../images/align-left.svg';
-import center from '../../../images/align-center.svg';
-import right from '../../../images/align-right.svg';
-import justify from '../../../images/align-justify.svg';
-import color from '../../../images/color.svg';
-import eraser from '../../../images/eraser.svg';
-import link from '../../../images/link.svg';
-import unlink from '../../../images/unlink.svg';
-import emoji from '../../../images/emoji.svg';
-import embedded from '../../../images/embedded.svg';
-import image from '../../../images/image.svg';
-import undo from '../../../images/undo.svg';
-import redo from '../../../images/redo.svg';
-import subscript from '../../../images/subscript.svg';
-import superscript from '../../../images/superscript.svg';
-import html from '../../../images/html.svg';
+import '../../../css/icons.css';
 
 /**
 * This is default toolbar configuration,
@@ -37,13 +12,13 @@ export default {
     component: undefined,
     dropdownClassName: undefined,
     options: ['bold', 'italic', 'underline', 'strikethrough', 'monospace', 'superscript', 'subscript'],
-    bold: { icon: bold, className: undefined },
-    italic: { icon: italic, className: undefined },
-    underline: { icon: underline, className: undefined },
-    strikethrough: { icon: strikethrough, className: undefined },
-    monospace: { icon: monospace, className: undefined },
-    superscript: { icon: superscript, className: undefined },
-    subscript: { icon: subscript, className: undefined },
+    bold: { icon: 'icon-editor-bold', className: undefined },
+    italic: { icon: 'icon-editor-italic', className: undefined },
+    underline: { icon: 'icon-editor-underline', className: undefined },
+    strikethrough: { icon: 'icon-editor-strikethrough', className: undefined },
+    monospace: { icon: 'icon-editor-monospace', className: undefined },
+    superscript: { icon: 'icon-editor-superscript', className: undefined },
+    subscript: { icon: 'icon-editor-subscript', className: undefined },
   },
   blockType: {
     inDropdown: true,
@@ -53,7 +28,7 @@ export default {
     dropdownClassName: undefined,
   },
   fontSize: {
-    icon: fontSize,
+    icon: 'icon-editor-font-size',
     options: [8, 9, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96],
     className: undefined,
     component: undefined,
@@ -71,10 +46,10 @@ export default {
     component: undefined,
     dropdownClassName: undefined,
     options: ['unordered', 'ordered', 'indent', 'outdent'],
-    unordered: { icon: unordered, className: undefined },
-    ordered: { icon: ordered, className: undefined },
-    indent: { icon: indent, className: undefined },
-    outdent: { icon: outdent, className: undefined },
+    unordered: { icon: 'icon-editor-unordered', className: undefined },
+    ordered: { icon: 'icon-editor-list-ordered', className: undefined },
+    indent: { icon: 'icon-editor-indent', className: undefined },
+    outdent: { icon: 'icon-editor-outdent', className: undefined },
   },
   textAlign: {
     inDropdown: false,
@@ -82,13 +57,13 @@ export default {
     component: undefined,
     dropdownClassName: undefined,
     options: ['left', 'center', 'right', 'justify'],
-    left: { icon: left, className: undefined },
-    center: { icon: center, className: undefined },
-    right: { icon: right, className: undefined },
-    justify: { icon: justify, className: undefined },
+    left: { icon: 'icon-editor-align-left', className: undefined },
+    center: { icon: 'icon-editor-align-center', className: undefined },
+    right: { icon: 'icon-editor-align-right', className: undefined },
+    justify: { icon: 'icon-editor-align-justify', className: undefined },
   },
   colorPicker: {
-    icon: color,
+    icon: 'icon-editor-color',
     className: undefined,
     component: undefined,
     popupClassName: undefined,
@@ -108,11 +83,11 @@ export default {
     showOpenOptionOnHover: true,
     defaultTargetOption: '_self',
     options: ['link', 'unlink'],
-    link: { icon: link, className: undefined },
-    unlink: { icon: unlink, className: undefined },
+    link: { icon: 'icon-editor-link', className: undefined },
+    unlink: { icon: 'icon-editor-unlink', className: undefined },
   },
   emoji: {
-    icon: emoji,
+    icon: 'icon-editor-emoji',
     className: undefined,
     component: undefined,
     popupClassName: undefined,
@@ -129,7 +104,7 @@ export default {
     ],
   },
   embedded: {
-    icon: embedded,
+    icon: 'icon-editor-embedded',
     className: undefined,
     component: undefined,
     popupClassName: undefined,
@@ -139,7 +114,7 @@ export default {
     },
   },
   image: {
-    icon: image,
+    icon: 'icon-editor-image',
     className: undefined,
     component: undefined,
     popupClassName: undefined,
@@ -152,18 +127,18 @@ export default {
       width: 'auto',
     },
   },
-  remove: { icon: eraser, className: undefined, component: undefined },
+  remove: { icon: 'icon-editor-eraser', className: undefined, component: undefined },
   history: {
     inDropdown: false,
     className: undefined,
     component: undefined,
     dropdownClassName: undefined,
     options: ['undo', 'redo'],
-    undo: { icon: undo, className: undefined },
-    redo: { icon: redo, className: undefined },
+    undo: { icon: 'icon-editor-undo', className: undefined },
+    redo: { icon: 'icon-editor-redo', className: undefined },
   },
   html: {
-    icon: html,
+    icon: 'icon-editor-html',
     className: undefined,
   }
 };

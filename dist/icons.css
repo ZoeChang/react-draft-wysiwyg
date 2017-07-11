@@ -1,0 +1,112 @@
+
+@font-face {
+  font-family: "editor";
+  src: url("./fonts/editor.eot");
+  src: url("./fonts/editor.eot#iefix") format("embedded-opentype"), url("./fonts/editor.ttf") format("truetype"), url("./fonts/editor.woff") format("woff"), url("./fonts/editor.svg#editor") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="icon-"], [class*=" icon-"] {
+  font-family: "editor" !important;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-editor-html:before {
+	content: "\e900";
+}
+
+.icon-editor-align-center:before {
+	content: "\e901";
+}
+
+.icon-editor-align-justify:before {
+	content: "\e902";
+}
+
+.icon-editor-align-left:before {
+	content: "\e903";
+}
+
+.icon-editor-align-right:before {
+	content: "\e904";
+}
+
+.icon-editor-bold:before {
+  font-size: 12px;
+	content: "\e905";
+}
+.icon-editor-color:before {
+	content: "\e906";
+}
+.icon-editor-embedded:before {
+	content: "\e907";
+}
+.icon-editor-emoji:before {
+	content: "\e908";
+}
+.icon-editor-eraser:before {
+	content: "\e909";
+}
+.icon-editor-font-size:before {
+	content: "\e90a";
+}
+.icon-editor-image:before {
+	content: "\e90b";
+}
+.icon-editor-indent:before {
+	content: "\e90c";
+}
+.icon-editor-italic:before {
+	content: "\e90d";
+}
+.icon-editor-link:before {
+	content: "\e90e";
+}
+.icon-editor-list-ordered:before {
+	content: "\e90f";
+}
+.icon-editor-list-unordered:before {
+	content: "\e910";
+}
+.icon-editor-monospace:before {
+	content: "\e911";
+}
+.icon-editor-openlink:before {
+	content: "\e912";
+}
+.icon-editor-ordered:before {
+	content: "\e913";
+}
+.icon-editor-outdent:before {
+	content: "\e914";
+}
+.icon-editor-redo:before {
+	content: "\e915";
+}
+.icon-editor-strikethrough:before {
+	content: "\e916";
+}
+.icon-editor-subscript:before {
+	content: "\e917";
+}
+.icon-editor-superscript:before {
+	content: "\e918";
+}
+.icon-editor-underline:before {
+	content: "\e919";
+}
+.icon-editor-undo:before {
+	content: "\e91a";
+}
+.icon-editor-unlink:before {
+	content: "\e91b";
+}
+.icon-editor-unordered:before {
+	content: "\e91c";
+}

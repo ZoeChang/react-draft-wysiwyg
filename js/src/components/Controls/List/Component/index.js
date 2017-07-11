@@ -51,9 +51,8 @@ export default class LayoutComponent extends Component {
           className={classNames(unordered.className)}
           active={listType === 'unordered'}
         >
-          <img
-            src={unordered.icon}
-            alt=""
+          <i
+            className={unordered.icon}
           />
         </Option>}
         {options.indexOf('ordered') >= 0 && <Option
@@ -62,27 +61,24 @@ export default class LayoutComponent extends Component {
           className={classNames(ordered.className)}
           active={listType === 'ordered'}
         >
-          <img
-            src={ordered.icon}
-            alt=""
+          <i
+            className={ordered.icon}
           />
         </Option>}
         {options.indexOf('indent') >= 0 && <Option
           onClick={this.indent}
           className={classNames(indent.className)}
         >
-          <img
-            src={indent.icon}
-            alt=""
+          <i
+            className={indent.icon}
           />
         </Option>}
         {options.indexOf('outdent') >= 0 && <Option
           onClick={this.outdent}
           className={classNames(outdent.className)}
         >
-          <img
-            src={outdent.icon}
-            alt=""
+          <i
+            className={outdent.icon}
           />
         </Option>}
       </div>
@@ -103,9 +99,8 @@ export default class LayoutComponent extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-list-control"
       >
-        <img
-          src={getFirstIcon(config)}
-          alt=""
+        <i
+          className={getFirstIcon(config)}
         />
         { this.options
           .filter(option => options.indexOf(option) >= 0)
@@ -115,9 +110,8 @@ export default class LayoutComponent extends Component {
             className={classNames('rdw-list-dropdownOption', config[option].className)}
             active={listType === option}
           >
-            <img
-              src={config[option].icon}
-              alt=""
+            <i
+              className={config[option].icon}
             />
           </DropdownOption>))
         }

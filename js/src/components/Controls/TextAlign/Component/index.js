@@ -31,9 +31,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'left'}
           onClick={onChange}
         >
-          <img
-            src={left.icon}
-            alt=""
+          <i
+            className={left.icon}
           />
         </Option>}
         {options.indexOf('center') >= 0 && <Option
@@ -42,9 +41,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'center'}
           onClick={onChange}
         >
-          <img
-            src={center.icon}
-            alt=""
+          <i
+            className={center.icon}
           />
         </Option>}
         {options.indexOf('right') >= 0 && <Option
@@ -53,9 +51,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'right'}
           onClick={onChange}
         >
-          <img
-            src={right.icon}
-            alt=""
+          <i
+            className={right.icon}
           />
         </Option>}
         {options.indexOf('justify') >= 0 && <Option
@@ -64,9 +61,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'justify'}
           onClick={onChange}
         >
-          <img
-            src={justify.icon}
-            alt=""
+          <i
+            className={justify.icon}
           />
         </Option>}
       </div>
@@ -95,18 +91,16 @@ export default class TextAlign extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-textalign-control"
       >
-        <img
-          src={(textAlignment && config[textAlignment].icon) || getFirstIcon(config)}
-          alt=""
+        <i
+          className={(textAlignment && config[textAlignment].icon) || getFirstIcon(config)}
         />
         {options.indexOf('left') >= 0 && <DropdownOption
           value="left"
           active={textAlignment === 'left'}
           className={classNames('rdw-text-align-dropdownOption', left.className)}
         >
-          <img
-            src={left.icon}
-            alt=""
+          <i
+            className={left.icon}
           />
         </DropdownOption>}
         {options.indexOf('center') >= 0 && <DropdownOption
@@ -114,9 +108,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'center'}
           className={classNames('rdw-text-align-dropdownOption', center.className)}
         >
-          <img
-            src={center.icon}
-            alt=""
+          <i
+            className={center.icon}
           />
         </DropdownOption>}
         {options.indexOf('right') >= 0 && <DropdownOption
@@ -124,9 +117,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'right'}
           className={classNames('rdw-text-align-dropdownOption', right.className)}
         >
-          <img
-            src={right.icon}
-            alt=""
+          <i
+            className={right.icon}
           />
         </DropdownOption>}
         {options.indexOf('justify') >= 0 && <DropdownOption
@@ -134,9 +126,8 @@ export default class TextAlign extends Component {
           active={textAlignment === 'justify'}
           className={classNames('rdw-text-align-dropdownOption', justify.className)}
         >
-          <img
-            src={justify.icon}
-            alt=""
+          <i
+            className={justify.icon}
           />
         </DropdownOption>}
       </Dropdown>

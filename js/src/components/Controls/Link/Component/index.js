@@ -166,9 +166,8 @@ class LayoutComponent extends Component {
           aria-haspopup="true"
           aria-expanded={showModal}
         >
-          <img
-            src={link.icon}
-            alt=""
+          <i
+            className={link.icon}
           />
         </Option>}
         {options.indexOf('unlink') >= 0 && <Option
@@ -177,9 +176,8 @@ class LayoutComponent extends Component {
           className={classNames(unlink.className)}
           onClick={this.removeLink}
         >
-          <img
-            src={unlink.icon}
-            alt=""
+          <i
+            className={unlink.icon}
           />
         </Option>}
         {expanded && showModal ? this.renderAddLinkModal() : undefined}
@@ -215,17 +213,15 @@ class LayoutComponent extends Component {
           doCollapse={doCollapse}
           onExpandEvent={onExpandEvent}
         >
-          <img
-            src={getFirstIcon(config)}
-            alt=""
+          <i
+            className={getFirstIcon(config)}
           />
           {options.indexOf('link') >= 0 && <DropdownOption
             onClick={this.forceExpandAndShowModal}
             className={classNames('rdw-link-dropdownoption', link.className)}
           >
-            <img
-              src={link.icon}
-              alt=""
+            <i
+              className={link.icon}
             />
           </DropdownOption>}
           {options.indexOf('unlink') >= 0 && <DropdownOption
@@ -233,9 +229,8 @@ class LayoutComponent extends Component {
             disabled={!currentState.link}
             className={classNames('rdw-link-dropdownoption', unlink.className)}
           >
-            <img
-              src={unlink.icon}
-              alt=""
+            <i
+              className={unlink.icon}
             />
           </DropdownOption>}
         </Dropdown>

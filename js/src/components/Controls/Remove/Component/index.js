@@ -14,9 +14,8 @@ const RemoveComponent = ({ config, onChange }) => {
         className={classNames(className)}
         onClick={onChange}
       >
-        <img
-          src={icon}
-          alt=""
+        <i
+          className={icon}
         />
       </Option>
     </div>
