@@ -39,7 +39,7 @@ class TestOption2 extends Component {
       'In gravida bibendum orci, id faucibus felis molestie ac.  ' +
       'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p>' +
       '<img src="http://i.imgur.com/aMtBIep.png" /><p></p>' +
-      '<table><tbody><tr><td>table</td><td>come</td><td>will</td></tr><tr><td>it</td><td>cool</td><td>magalao</td></tr></tbody></table>'
+      '<table><tr><th>Month</th><th>Savings</th></tr><tr><td rowspan="2">January</td><td>$100</td></tr><tr><td>$80</td></tr><tr><td colspan="2" style="background-color: #eee" >Sum: $180</td></tr></table>'
       )
     );
 

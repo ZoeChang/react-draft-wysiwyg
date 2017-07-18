@@ -1,6 +1,8 @@
 import React from 'react'
 import { Entity } from 'draft-js'
 import { convertToHTML, convertFromHTML } from 'draft-convert'
+import { trtdAttrToReactMap } from './htmlAttrToReactMap'
+import deleteEmptyValue from './deleteEmptyValue'
 
 export function convertDraftToHTML(editorContent) {
   const styleToHTML = (style) => {
@@ -145,11 +147,56 @@ export function convertHTMLToDraft(html) {
           })
         })
 
+        const attrs = Array.prototype.slice.call(node.firstElementChild.children).map(tr => {
+
+          const parsedStyle = deleteEmptyValue(tr.style)
+          const trStyle = Object.keys(parsedStyle).reduce((accu, cssKey) => {
+            accu[cssKey] = parsedStyle[cssKey]
+            return accu
+          }, {})
+
+          const trAttr = Object.keys(tr.attributes).reduce((accu, attributeKey) => {
+            const mappedName = trtdAttrToReactMap[tr.attributes[attributeKey].name]
+            if (mappedName) {
+              accu[mappedName] = tr.attributes[attributeKey].value
+            }
+            return accu
+          }, {})
+
+          const tdStyle = Array.prototype.slice.call(tr.children).map(td => {
+            const parsedStyle = deleteEmptyValue(td.style)
+            return Object.keys(parsedStyle).reduce((accu, cssKey) => {
+              accu[cssKey] = parsedStyle[cssKey]
+              return accu
+            }, {})
+          })
+
+          const tdAttr = Array.prototype.slice.call(tr.children).map(td => {
+            return Object.keys(td.attributes).reduce((accu, attributeKey) => {
+              const mappedName = trtdAttrToReactMap[td.attributes[attributeKey].name]
+              if (mappedName) {
+                accu[mappedName] = td.attributes[attributeKey].value
+              }
+              return accu
+            }, {})
+          })
+
+          return {
+            attributes: trAttr,
+            style: trStyle,
+            td: {
+              attributes: tdAttr,
+              style: tdStyle
+            }
+          }
+        })
+
         return Entity.create(
             'TABLE',
             'IMMUTABLE',
             {
-              grids
+              grids,
+              attributes: attrs,
             }
         )
       }

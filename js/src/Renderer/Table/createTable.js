@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { EditorState } from 'draft-js'
 import Immutable from 'immutable'
 import { ContentState } from 'draft-js'
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
@@ -11,8 +10,9 @@ const createTable = () => class Table extends Component {
   constructor(props) {
     super(props);
     const { entity } = props.blockProps
-    const { grids } = entity.getData();
+    const { grids, attributes } = entity.getData();
     this.state = {
+      attributes,
       grids: grids || [[]],
       isEditing: false,
       focusRow: -1,
@@ -120,7 +120,10 @@ const createTable = () => class Table extends Component {
   }
 
   render() {
-    const { grids, isEditing, focusRow, focusColumn } = this.state
+    const {
+      grids, isEditing, focusRow,
+      focusColumn, attributes
+    } = this.state
     return (
       <table
         ref={(element) => { this.table = element; }}
@@ -133,6 +136,8 @@ const createTable = () => class Table extends Component {
               <tr
                 key={rowIndex}
                 className='editor-table-tr'
+                {...attributes[rowIndex].attributes}
+                style={attributes[rowIndex].style}
               >
                 {rows.map((column, columnIndex) => {
                   return (
@@ -140,6 +145,8 @@ const createTable = () => class Table extends Component {
                       key={columnIndex}
                       className='editor-table-td'
                       onClick={(event) => this.onClickTdEventHandler(event, rowIndex, columnIndex)}
+                      {...attributes[rowIndex].td.attributes[columnIndex]}
+                      style={attributes[rowIndex].td.style[columnIndex]}
                     >
                       {
                         isEditing && `${focusRow}-${focusColumn}` === `${rowIndex}-${columnIndex}`
