@@ -48,7 +48,7 @@ export function convertDraftToHTML(editorContent) {
   const entityToHTML = (entity, originalText) => {
     switch (entity.type) {
       case 'TABLE': {
-        const grids = entity.data.grids
+        const { grids, attributes } = entity.data
         return (
           <table>
             <tbody>
@@ -56,11 +56,15 @@ export function convertDraftToHTML(editorContent) {
                 return (
                   <tr
                     key={rowIndex}
+                    {...attributes[rowIndex].attributes}
+                    style={attributes[rowIndex].style}
                   >
                     {rows.map((column, columnIndex) => {
                       return (
                         <td
                           key={columnIndex}
+                          {...attributes[rowIndex].td.attributes[columnIndex]}
+                          style={attributes[rowIndex].td.style[columnIndex]}
                         >
                           {column}
                         </td>

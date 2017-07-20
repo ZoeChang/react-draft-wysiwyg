@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map } from 'immutable';
+import Immutable, { Map } from 'immutable';
 import PropTypes from 'prop-types';
 import {
   Editor,
@@ -141,7 +141,7 @@ export default class WysiwygEditor extends Component {
     //   newState.toolbar = toolbar;
     // }
 
-    if (hasProperty(props, 'editorState') && this.props.editorState !== props.editorState) {
+    if (hasProperty(props, 'editorState') && !Immutable.is(this.props.editorState, props.editorState)) {
       if (props.editorState) {
         newState.editorState = EditorState.set(
           props.editorState,
