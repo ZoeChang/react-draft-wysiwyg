@@ -173,10 +173,7 @@ const createTable = () => class Table extends Component {
     }
   }
 
-  onTdFocus = (ref) => {
-    // console.log('this.refs[ref].offsetLeft', this.refs[ref].offsetLeft)
-    // console.log('this.refs[ref].offsetTop', this.refs[ref].offsetTop)
-  }
+  onTdFocus = (ref) => {}
 
   onAddRowAfter = (row) => {
     if (row === -1) return
@@ -465,11 +462,6 @@ const createTable = () => class Table extends Component {
       selectedRowsNCols, isFontExpanded, isWidthExpanded
     } = this.state
     const { readOnly, translations } = this.props.blockProps
-    console.log('this.state.mouseOverStartRow', this.state.mouseOverStartRow)
-    console.log('this.state.mouseOverStartCol', this.state.mouseOverStartCol)
-    console.log('this.state.mouseOverRow', this.state.mouseOverRow)
-    console.log('this.state.mouseOverCol', this.state.mouseOverCol)
-    console.log('---------------------')
 
     return (
       <div>
@@ -557,12 +549,7 @@ const createTable = () => class Table extends Component {
           <div
             className='rdw-dropdown-optionwrapper'
             style={customizedStyle.tdTool}
-            onClick={
-              () => {
-                console.log('lastFocusColumn', lastFocusColumn)
-                console.log('lastFocusRow', lastFocusRow)
-              }
-            }
+            onClick={() => {}}
           >
             <div style={customizedStyle.tdToolWrapper}>
               <span
@@ -668,7 +655,7 @@ const createTable = () => class Table extends Component {
           onChange={this.onWidthChange}
           expanded={isWidthExpanded}
           config={{
-            options: [10,20,30,40,50,60,70,80,90]
+            options: [10,20,25,30,40,50,60,70,75,80,90]
           }}
           currentState={{fontSize: '%'}}
         />

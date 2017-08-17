@@ -16270,11 +16270,6 @@ var createTable = function createTable() {
             readOnly = _props$blockProps.readOnly,
             translations = _props$blockProps.translations;
 
-        console.log('this.state.mouseOverStartRow', this.state.mouseOverStartRow);
-        console.log('this.state.mouseOverStartCol', this.state.mouseOverStartCol);
-        console.log('this.state.mouseOverRow', this.state.mouseOverRow);
-        console.log('this.state.mouseOverCol', this.state.mouseOverCol);
-        console.log('---------------------');
 
         return _react2.default.createElement(
           'div',
@@ -16365,10 +16360,7 @@ var createTable = function createTable() {
             {
               className: 'rdw-dropdown-optionwrapper',
               style: customizedStyle.tdTool,
-              onClick: function onClick() {
-                console.log('lastFocusColumn', lastFocusColumn);
-                console.log('lastFocusRow', lastFocusRow);
-              }
+              onClick: function onClick() {}
             },
             _react2.default.createElement(
               'div',
@@ -16478,7 +16470,7 @@ var createTable = function createTable() {
             onChange: this.onWidthChange,
             expanded: isWidthExpanded,
             config: {
-              options: [10, 20, 30, 40, 50, 60, 70, 80, 90]
+              options: [10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90]
             },
             currentState: { fontSize: '%' }
           })
@@ -16566,10 +16558,7 @@ var createTable = function createTable() {
       }
     };
 
-    this.onTdFocus = function (ref) {
-      // console.log('this.refs[ref].offsetLeft', this.refs[ref].offsetLeft)
-      // console.log('this.refs[ref].offsetTop', this.refs[ref].offsetTop)
-    };
+    this.onTdFocus = function (ref) {};
 
     this.onAddRowAfter = function (row) {
       if (row === -1) return;
