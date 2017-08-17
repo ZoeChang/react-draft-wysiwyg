@@ -48,7 +48,8 @@ export default class Dropdown extends Component {
   };
 
   toggleExpansion: Function = (): void => {
-    const { doExpand, doCollapse, expanded } = this.props;
+    const { doExpand, doCollapse, expanded, isTablePicker } = this.props;
+    if (isTablePicker) return
     if (expanded) {
       doCollapse();
     } else {

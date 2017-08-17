@@ -47,14 +47,14 @@ module.exports = {
           use: "css-loader?modules&importLoaders=1&localIdentName=[local]!postcss-loader"
         }),
       },
-      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' },
       {
-        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+        test: /\.(ico|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         loader: 'file-loader',
         query: {
           name: 'static/media/[name].[hash:8].[ext]'
         }
       },
+      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?limit=10000&mimetype=image/svg+xml',

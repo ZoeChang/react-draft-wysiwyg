@@ -7,6 +7,7 @@
 .editor-table {
   border-collapse: collapse;
   border: 1px solid #111;
+  width: 100%;
 }
 
 .editor-table-tr {
@@ -24,4 +25,8 @@
 .editor-table-input {
   width: 95%;
   height: 25px;
+}
+
+.editor-table-active-td {
+  border: 1px double #1e88e5;
 }

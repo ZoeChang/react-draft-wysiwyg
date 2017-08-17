@@ -46,3 +46,8 @@
 .rdw-editor-wrapper textarea:focus {
   outline: none;
 }
+
+.rdw-editor-main figure {
+  padding: 0;
+  margin: 0;
+}

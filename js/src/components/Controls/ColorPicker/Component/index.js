@@ -44,13 +44,24 @@ class LayoutComponent extends Component {
   };
 
   onChange: Function = (color: string): void => {
-    const { onChange } = this.props;
+    const { onChange, isTablePicker } = this.props;
     const { currentStyle } = this.state;
-    onChange(currentStyle, color);
+    if (isTablePicker) {
+      this.props.onTablePickerChange(currentStyle, color)
+    } else {
+      onChange(currentStyle, color);
+    }
+  }
+
+  onCustomizedColor = () => {
+    console.log(';asdadsklsadlkl;as')
   }
 
   renderModal: Function = (): Object => {
-    const { config: { popupClassName, colors }, currentState: { color, bgColor }, translations } = this.props;
+    const {
+      config: { popupClassName, colors }, currentState: { color, bgColor }, translations,
+      isTablePicker
+    } = this.props;
     const { currentStyle } = this.state;
     const currentSelectedColor = (currentStyle === 'color') ? color : bgColor;
     return (
@@ -93,7 +104,8 @@ class LayoutComponent extends Component {
                   style={{ backgroundColor: color }}
                   className="rdw-colorpicker-cube"
                 />
-              </Option>)
+              </Option>
+            )
           }
         </span>
       </div>

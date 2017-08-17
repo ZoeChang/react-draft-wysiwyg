@@ -61,3 +61,22 @@ export function filter(obj, keys) {
 export function stopPropagation(event) {
   event.stopPropagation();
 };
+
+export const generateArray = (x: number, insertItem = '') => {
+  const array = []
+  for (let j = 0; j < x; j++) {
+    array.push(insertItem)
+  }
+  return array
+}
+
+export const generate2dArray = (x: number, y: number) => {
+  const array2d = []
+  for (let i = 0; i < y; i++) {
+    array2d.push([])
+    for (let j = 0; j < x; j++) {
+      array2d[i].push('')
+    }
+  }
+  return array2d
+}

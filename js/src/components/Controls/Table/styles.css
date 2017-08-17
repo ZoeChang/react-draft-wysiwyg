@@ -1,0 +1,23 @@
+.rdw-table-insert-wrapper {
+  max-width: 27px;
+  padding: 4px;
+  margin: 0;
+  height: 22px;
+}
+
+.rdw-dropdown-table {
+  top: 4px;
+  left: -6px;
+}
+
+.rdw-table-picker-cell {
+  background-image: url('../../../../../images/picker-cell.png');
+  overflow: hidden;
+  background-repeat: repeat;
+}
+
+.rdw-table-picker-container {
+  overflow: hidden;
+  background-color: #fff;
+  cursor: pointer;
+}

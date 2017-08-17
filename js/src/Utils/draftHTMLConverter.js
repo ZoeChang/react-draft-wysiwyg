@@ -110,7 +110,9 @@ export function convertDraftToHTML(editorContent) {
 export function convertHTMLToDraft(html) {
   const htmlToStyle = (nodeName, node, currentStyle) => {
 
-      if (nodeName === 'span') {
+      if (
+        nodeName === 'span'
+      ) {
 
         if (node.style.color) {
           currentStyle = currentStyle.add(`color-${node.style.color}`);

@@ -5,7 +5,7 @@ import '../../../css/icons.css';
 * whatever user passes in toolbar property is deeply merged with this to over-ride defaults.
 */
 export default {
-  options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history', 'html'],
+  options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history', 'table', 'html'],
   inline: {
     inDropdown: false,
     className: undefined,
@@ -139,6 +139,10 @@ export default {
   },
   html: {
     icon: 'icon-editor-html',
+    className: undefined,
+  },
+  table: {
+    icon: 'icon-editor-table-insert',
     className: undefined,
   }
 };

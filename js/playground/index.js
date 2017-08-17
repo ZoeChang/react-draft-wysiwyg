@@ -39,7 +39,7 @@ class TestOption2 extends Component {
       'In gravida bibendum orci, id faucibus felis molestie ac.  ' +
       'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p>' +
       '<img src="http://i.imgur.com/aMtBIep.png" /><p></p>' +
-      '<table><tr><th>Month</th><th>Savings</th></tr><tr><td rowspan="2">January</td><td>$100</td></tr><tr><td>$80</td></tr><tr><td colspan="2" style="background-color: #eee" >Sum: $180</td></tr></table>'
+      '<table><tbody><tr><td style="font-size:24px;background-color:#ffc107;color:#000000;">買一送一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級二</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">10</td><td style="background-color:#cddc39;color:#3f51b5;">送一百</td><td style="background-color:#cddc39;color:#3f51b5;">送一千</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">20</td><td style="background-color:#cddc39;color:#3f51b5;">送二百</td><td style="background-color:#cddc39;color:#3f51b5;">送二千</td></tr><tr><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">30</td><td style="background-color:#cddc39;color:#3f51b5;">送三百</td><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">送送千</td></tr></tbody></table>'
       )
     );
 

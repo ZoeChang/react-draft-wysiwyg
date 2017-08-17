@@ -103,10 +103,17 @@ export default class WysiwygEditor extends Component {
       tableHTMLCacheString: '',
       toolbar,
     };
+    const {
+      locale,
+      localization: { locale: newLocale, translations },
+    } = props
+
     this.wrapperId = `rdw-wrapper${Math.floor(Math.random() * 10000)}`;
     this.modalHandler = new ModalHandler();
     this.focusHandler = new FocusHandler();
     this.blockRendererFn = getBlockRenderFunc({
+      translations: { ...localeTranslations[locale || newLocale], ...translations },
+      readOnly: props.readOnly,
       isReadOnly: this.isReadOnly,
       isImageAlignmentEnabled: this.isImageAlignmentEnabled,
       getEditorState: this.getEditorState,

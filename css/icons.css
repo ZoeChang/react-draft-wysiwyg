@@ -21,6 +21,10 @@
 	content: "\ea00";
 }
 
+.icon-editor-table-insert:before {
+	content: "\ea1d";
+}
+
 .icon-editor-align-center:before {
 	content: "\ea01";
 }
@@ -107,6 +111,28 @@
 .icon-editor-unlink:before {
 	content: "\ea1b";
 }
-.icon-editor-unordered:before {
-	content: "\ea1c";
+
+.icon-editor-font-size-a:before {
+	content: "\ea2e";
+	font-size: 1.5em;
+}
+.icon-editor-fit-to-width:before {
+	content: "\ea2f";
+	font-size: 1.5em;
+}
+.icon-editor-insert-row:before {
+	content: "\ea30";
+	font-size: 1.5em;
+}
+.icon-editor-insert-column:before {
+	content: "\ea31";
+	font-size: 1.5em;
+}
+.icon-editor-remove-row:before {
+	content: "\ea32";
+	font-size: 1.5em;
+}
+.icon-editor-remove-column:before {
+	content: "\ea33";
+	font-size: 1.5em;
 }

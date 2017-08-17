@@ -44,6 +44,7 @@ export default class LayoutComponent extends Component {
       doCollapse,
       onExpandEvent,
       doExpand,
+      isTablePicker,
     } = this.props;
     let { currentState: { fontSize : currentFontSize} } = this.props;
     let { defaultFontSize } = this.state;
@@ -53,6 +54,7 @@ export default class LayoutComponent extends Component {
     return (
       <div className="rdw-fontsize-wrapper" aria-label="rdw-font-size-control">
         <Dropdown
+          isTablePicker={isTablePicker}
           className={classNames('rdw-fontsize-dropdown', className)}
           optionWrapperClassName={classNames(dropdownClassName)}
           onChange={onChange}
@@ -62,7 +64,7 @@ export default class LayoutComponent extends Component {
           onExpandEvent={onExpandEvent}
         >
           {currentFontSize ?
-            <span>{currentFontSize}</span>
+            (<span>{currentFontSize}</span>)
           :
             <img
               src={icon}

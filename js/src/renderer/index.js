@@ -5,7 +5,7 @@ import createTable from './Table/createTable';
 const getBlockRenderFunc = (config, customBlockRenderer) => {
   const {
     tableEditsChange, tableEdits, onChange: onEditorChange,
-    isReadOnly
+    isReadOnly, readOnly, translations
   } = config;
   return (block) => {
     if (typeof customBlockRenderer === 'function') {
@@ -31,9 +31,11 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
           component: createTable(),
           editable: false,
           props: {
+            translations,
             onEditorChange,
             editorState,
             isReadOnly,
+            readOnly,
             entity,
             onStartEdit: (blockKey) => {
               tableEditsChange(tableEdits.set(blockKey, true));

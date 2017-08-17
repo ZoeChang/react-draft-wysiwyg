@@ -12,6 +12,7 @@ import image from './Image';
 import remove from './Remove';
 import history from './History';
 import html from './Html';
+import table from './Table'
 
 module.exports = {
   inline,
@@ -28,4 +29,5 @@ module.exports = {
   remove,
   history,
   html,
+  table,
 }
