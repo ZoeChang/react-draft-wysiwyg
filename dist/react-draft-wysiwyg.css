@@ -1005,6 +1005,10 @@
 }
 
 .editor-table {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   border-collapse: collapse;
   border: 1px solid #111;
   width: 100%;
@@ -1029,6 +1033,13 @@
 
 .editor-table-active-td {
   border: 1px double #1e88e5;
+}
+
+.editor-table-tool-wrapper button, .editor-table-tool-wrapper button:active, .editor-table-tool-wrapper button:focus, .editor-table-tool-wrapper button:hover {
+	background:none;
+	outline:none;
+  padding: 4px;
+  height: 100%;
 }
 
 @font-face {

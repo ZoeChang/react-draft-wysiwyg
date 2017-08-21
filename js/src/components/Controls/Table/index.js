@@ -102,9 +102,12 @@ class Table extends Component {
 
     // NOT supporting ie8
     if (this.state.isMouseInArea) {
+      const { top, left } = this.refs['table-picker'].getBoundingClientRect()
+      const { screenX, screenY } = event
+
       const postion = {
-        x: event.pageX - this.refs['table-control'].offsetLeft,
-        y: event.pageY - this.refs['table-control'].offsetTop - staticConfig.panelHeight,
+        x: screenX - left,
+        y: screenY - top - staticConfig.panelHeight - 4 * staticConfig.cellHeight,
       }
       this.setState({
         mousePositionInCellArea: postion,
@@ -214,6 +217,7 @@ class Table extends Component {
         </div>
         {isTableInsertOpen &&
           <div
+            ref='table-picker'
             className="rdw-dropdown-optionwrapper rdw-dropdown-table"
             style={{
               width: pickerCellStyle.width + staticConfig.extra,

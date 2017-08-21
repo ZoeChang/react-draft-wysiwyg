@@ -6,6 +6,7 @@ import { generateArray } from '../../Utils/common'
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 import ColorPicker from '../../components/Controls/ColorPicker/Component/index';
 import FontSize from '../../components/Controls/FontSize/Component/index';
+import ClickOutside from 'react-click-outside'
 
 const getSelectedRowsNCols = (startrow, startcol, endrow, endcol) => {
   const minRow = startrow < endrow ? startrow : endrow
@@ -44,7 +45,7 @@ const customizedStyle = {
   }
 }
 
-const createTable = () => class Table extends Component {
+class Table extends Component {
   static propTypes = {
     blockProps: PropTypes.object,
   }
@@ -175,8 +176,9 @@ const createTable = () => class Table extends Component {
 
   onTdFocus = (ref) => {}
 
-  onAddRowAfter = (row) => {
-    if (row === -1) return
+  onAddRowAfter = () => {
+    const { selectedRowsNCols } = this.state
+    const row = selectedRowsNCols[0].row // by default take first item as row
     const { block, blockProps, contentState } = this.props
     const { grids, attributes } = blockProps.entity.getData();
     const columnLength = grids[0].length
@@ -211,11 +213,11 @@ const createTable = () => class Table extends Component {
 
     const newEditorState = EditorState.createWithContent(newContentState)
     blockProps.onEditorChange(newEditorState)
-
   }
 
-  onRemoveRowAfter = (row) => {
-    if (row === -1) return
+  onRemoveRow = () => {
+    const { selectedRowsNCols } = this.state
+    const row = selectedRowsNCols[0].row // by default take first item as row
     const { block, blockProps, contentState } = this.props
     const { grids, attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
@@ -240,8 +242,9 @@ const createTable = () => class Table extends Component {
     blockProps.onEditorChange(newEditorState)
   }
 
-  onAddColumnAfter = (columnIndex) => {
-    if (columnIndex === -1) return
+  onAddColumnAfter = () => {
+    const { selectedRowsNCols } = this.state
+    const columnIndex = selectedRowsNCols[0].column
     const { block, blockProps, contentState } = this.props
     const { grids, attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
@@ -265,8 +268,9 @@ const createTable = () => class Table extends Component {
     blockProps.onEditorChange(newEditorState)
   }
 
-  onRemoveColumn = (columnIndex) => {
-    if (columnIndex === -1) return
+  onRemoveColumn = () => {
+    const { selectedRowsNCols } = this.state
+    const columnIndex = selectedRowsNCols[0].column
     const { block, blockProps, contentState } = this.props
     const { grids, attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
@@ -291,17 +295,12 @@ const createTable = () => class Table extends Component {
   }
 
   onWidthChange = (width: number) => {
-    const { lastFocusColumn, lastFocusRow, selectedRowsNCols } = this.state
+    const { selectedRowsNCols } = this.state
     const { block, blockProps, contentState } = this.props
     const { attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
 
-    if (lastFocusRow !== -1 && lastFocusColumn !== -1) {
-      attributes[lastFocusRow].td.style[lastFocusColumn] = {
-        ...attributes[lastFocusRow].td.style[lastFocusColumn],
-        width: `${width}%`,
-      }
-    } else if (selectedRowsNCols.length !== 0) {
+    if (selectedRowsNCols.length !== 0) {
       selectedRowsNCols.forEach(({column, row}) => {
         attributes[row].td.style[column] = {
           ...attributes[row].td.style[column],
@@ -321,17 +320,12 @@ const createTable = () => class Table extends Component {
   }
 
   onFontSizeChange = (fontSize: number) => {
-    const { lastFocusColumn, lastFocusRow, selectedRowsNCols } = this.state
+    const { selectedRowsNCols } = this.state
     const { block, blockProps, contentState } = this.props
     const { attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
 
-    if (lastFocusRow !== -1 && lastFocusColumn !== -1) {
-      attributes[lastFocusRow].td.style[lastFocusColumn] = {
-        ...attributes[lastFocusRow].td.style[lastFocusColumn],
-        fontSize,
-      }
-    } else if (selectedRowsNCols.length !== 0) {
+    if (selectedRowsNCols.length !== 0) {
       selectedRowsNCols.forEach(({column, row}) => {
         attributes[row].td.style[column] = {
           ...attributes[row].td.style[column],
@@ -351,25 +345,12 @@ const createTable = () => class Table extends Component {
   }
 
   onColorChange = (currentStyle, color) => {
-    const { lastFocusColumn, lastFocusRow, selectedRowsNCols } = this.state
+    const { selectedRowsNCols } = this.state
     const { block, blockProps, contentState } = this.props
     const { attributes } = blockProps.entity.getData();
     const entityKey = block.getEntityAt(0);
 
-    if (lastFocusRow !== -1 && lastFocusColumn !== -1) {
-
-      if (currentStyle === 'bgcolor') {
-        attributes[lastFocusRow].td.style[lastFocusColumn] = {
-          ...attributes[lastFocusRow].td.style[lastFocusColumn],
-          backgroundColor: color,
-        }
-      } else if (currentStyle === 'color') {
-        attributes[lastFocusRow].td.style[lastFocusColumn] = {
-          ...attributes[lastFocusRow].td.style[lastFocusColumn],
-          color,
-        }
-      }
-    } else if (selectedRowsNCols.length !== 0) {
+    if (selectedRowsNCols.length !== 0) {
       selectedRowsNCols.forEach(({column, row}) => {
         if (currentStyle === 'bgcolor') {
           attributes[row].td.style[column] = {
@@ -404,13 +385,17 @@ const createTable = () => class Table extends Component {
 
   onMouseUpHandler = (event) => {
     const { mouseOverCol, mouseOverRow, mouseOverStartRow, mouseOverStartCol } = this.state
+    const { block, blockProps: { tableSelectionChange } } = this.props
     const selectedRowsNCols = getSelectedRowsNCols(mouseOverRow, mouseOverCol, mouseOverStartRow, mouseOverStartCol)
-    
 
     this.setState({
       isMouseDown: false,
       selectedRowsNCols,
-    })
+    }, 
+    tableSelectionChange({
+      blockKey: block.getKey(),
+      selectedRowsNCols,
+    }))
   }
 
   onMouseOverTdHandler = (row, column) => {
@@ -442,6 +427,23 @@ const createTable = () => class Table extends Component {
     }
   }
 
+  onClickOutsideHandler = () => {
+    const { block, blockProps: { tableSelectionChange, getTableSelection } } = this.props
+
+    // each table will trigger its own internal state reset.
+    this.setState({
+      selectedRowsNCols: [],
+    })
+
+    // tableSelectionChnage reset will only be triggered by in progress table.
+    if (getTableSelection().blockKey === block.getKey()) {
+      tableSelectionChange({
+        blockKey: '',
+        selectedRowsNCols: [],
+      })
+    }
+  }
+
   onKeyDownTdInput = (event) => {
     event.stopPropagation()
   }
@@ -458,13 +460,19 @@ const createTable = () => class Table extends Component {
     const {
       grids, isEditing, focusRow,
       focusColumn, attributes, isColorPalate,
-      isControlMode, lastFocusColumn, lastFocusRow,
-      selectedRowsNCols, isFontExpanded, isWidthExpanded
+      lastFocusColumn, lastFocusRow, selectedRowsNCols,
+      isFontExpanded, isWidthExpanded
     } = this.state
     const { readOnly, translations } = this.props.blockProps
+    const optionWrapperClasses = {
+      'rdw-option-wrapper': true,
+      'rdw-option-disabled': selectedRowsNCols.length === 0,
+    }
 
     return (
-      <div>
+      <ClickOutside
+        onClickOutside={this.onClickOutsideHandler}
+      >
         <table
           ref={(element) => { this.table = element; }}
           onMouseDown={this.onMouseDownHandler}
@@ -487,9 +495,6 @@ const createTable = () => class Table extends Component {
                       'editor-table-active-td': (
                         `${focusRow}-${focusColumn}` === `${rowIndex}-${columnIndex}` ||
                         (
-                          `${lastFocusRow}-${lastFocusColumn}` === `${rowIndex}-${columnIndex}` &&
-                          isControlMode
-                        ) || (
                           selectedRowsNCols
                             .filter(rowNCol => rowNCol.row === rowIndex && rowNCol.column === columnIndex).length
                           !== 0
@@ -551,49 +556,57 @@ const createTable = () => class Table extends Component {
             style={customizedStyle.tdTool}
             onClick={() => {}}
           >
-            <div style={customizedStyle.tdToolWrapper}>
+            <div
+              className='editor-table-tool-wrapper'
+              style={customizedStyle.tdToolWrapper}
+            >
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={
                   () => {
-                    this.onAddRowAfter(lastFocusRow, lastFocusColumn)
+                    if (selectedRowsNCols.length === 0) return
+                    this.onAddRowAfter()
                   }
                 }
               >
                 <i className='icon-editor-insert-row' />
               </span>
-              <span className='rdw-option-wrapper'
+              <span className={classNames(optionWrapperClasses)}
                 onClick={
                   () => {
-                    this.onRemoveRowAfter(lastFocusRow, lastFocusColumn)
+                    if (selectedRowsNCols.length === 0) return
+                    this.onRemoveRow()
                   }
                 }
               >
                 <i className='icon-editor-remove-row' />
               </span>
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={
                   () => {
-                    this.onAddColumnAfter(lastFocusColumn)
+                    if (selectedRowsNCols.length === 0) return
+                    this.onAddColumnAfter()
                   }
                 }
               >
                 <i className='icon-editor-insert-column' />
               </span>
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={
                   () => {
-                    this.onRemoveColumn(lastFocusColumn)
+                    if (selectedRowsNCols.length === 0) return
+                    this.onRemoveColumn()
                   }
                 }
               >
                 <i className='icon-editor-remove-column' />
               </span>
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={() => {
+                  if (selectedRowsNCols.length === 0) return
                   this.setState({
                     isColorPalate: !isColorPalate,
                     isControlMode: !this.state.isControlMode
@@ -603,8 +616,9 @@ const createTable = () => class Table extends Component {
                 <i className='icon-editor-color' />
               </span>
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={() => {
+                  if (selectedRowsNCols.length === 0) return
                   this.setState({
                     isFontExpanded: !isFontExpanded,
                     isControlMode: !this.state.isControlMode
@@ -614,8 +628,9 @@ const createTable = () => class Table extends Component {
                 <i className='icon-editor-font-size-a' />
               </span>
               <span
-                className='rdw-option-wrapper'
+                className={classNames(optionWrapperClasses)}
                 onClick={() => {
+                  if (selectedRowsNCols.length === 0) return
                   this.setState({
                     isWidthExpanded: !isWidthExpanded,
                     isControlMode: !this.state.isControlMode
@@ -644,7 +659,7 @@ const createTable = () => class Table extends Component {
           onChange={this.onFontSizeChange}
           expanded={isFontExpanded}
           config={{
-            options: [8,12,16,18,20,24,28,32,36]
+            options: [8,12,16,18,20,24,28,32,36,48]
           }}
           currentState={{}}
         />
@@ -660,9 +675,9 @@ const createTable = () => class Table extends Component {
           currentState={{fontSize: '%'}}
         />
         }
-      </div>
+      </ClickOutside>
     );
   }
 };
 
-export default createTable;
+export default Table;
