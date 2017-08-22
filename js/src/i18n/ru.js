@@ -3,6 +3,8 @@ module.exports = {
   // Generic
   'generic.add': 'Добавить',
   'generic.cancel': 'Отменить',
+  'colors': 'Colors',
+  'font-size': 'Font Size',
 
   // BlockType
   'components.controls.blocktype.h1': 'Заголовок 1',
@@ -35,4 +37,11 @@ module.exports = {
   'components.controls.link.linkTitle': 'Текст',
   'components.controls.link.linkTarget': 'Адрес ссылки',
   'components.controls.link.linkTargetOption': 'Открывать в новом окне',
+
+  // Table
+  'table.remove.row': 'Remove Row',
+  'table.add.row': 'Add Row',
+  'table.remove.col': 'Remove Column',
+  'table.add.col': 'Add Column',
+  'table.col.width': 'Column Width',
 }

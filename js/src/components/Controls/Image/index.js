@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Entity, AtomicBlockUtils } from 'draft-js';
+import { AtomicBlockUtils } from 'draft-js';
 
 import LayoutComponent from './Component';
 

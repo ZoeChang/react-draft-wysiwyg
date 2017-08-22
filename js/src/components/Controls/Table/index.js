@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { AtomicBlockUtils } from 'draft-js'
-import { generate2dArray } from '../../../Utils/common'
+import { generate2dArray, generateArray } from '../../../Utils/common'
+import { EditorState } from 'draft-js'
+import ColorPicker from '../../Controls/ColorPicker/Component/index';
+import ClickOutside from 'react-click-outside'
+import FontSize from '../../Controls/FontSize/Component/index';
 import './styles.css'
 
 const staticConfig = {
@@ -14,6 +17,9 @@ const staticConfig = {
   maxYCells: 11,
   minXCells: 4,
   minYCells: 4,
+  table: {
+    colors: ['#f44336','#e91e63','#9c27b0','#673ab7','#3f51b5','#2196f3','#03a9f4','#00bcd4','#009688','#4caf50','#8bc34a','#cddc39','#ffeb3b','#ffc107','#ff9800','#ff5722','#795548','#9e9e9e','#607d8b','#ffffff','#000000'],
+  },
 }
 
 const generateEmptyAttrs = (x, y) => {
@@ -50,7 +56,12 @@ class Table extends Component {
         x: 0,
         y: 0,
       },
-      isMouseInArea: false
+      isMouseInArea: false,
+
+      isFontExpanded: false,
+      isColorPalate: false,
+      isControlMode: false,
+      isWidthExpanded: false,
     }
   }
 
@@ -102,9 +113,12 @@ class Table extends Component {
 
     // NOT supporting ie8
     if (this.state.isMouseInArea) {
+      const { top, left } = this.refs['table-picker'].getBoundingClientRect()
+      const { screenX, screenY } = event
+
       const postion = {
-        x: event.pageX - this.refs['table-control'].offsetLeft,
-        y: event.pageY - this.refs['table-control'].offsetTop - staticConfig.panelHeight,
+        x: screenX - left,
+        y: screenY - top - staticConfig.panelHeight - 4 * staticConfig.cellHeight,
       }
       this.setState({
         mousePositionInCellArea: postion,
@@ -173,11 +187,221 @@ class Table extends Component {
     })
   }
 
+  onAddRowAfter = () => {
+    const { selectedRowsNCols } = this.state
+    const row = selectedRowsNCols[0].row // by default take first item as row
+    const { block, blockProps, contentState } = this.props
+    const { grids, attributes } = blockProps.entity.getData();
+    const columnLength = grids[0].length
+    const entityKey = block.getEntityAt(0);
+    const insertedRows = generateArray(columnLength)
+    const insertedAttrs = {
+      attributes: {},
+      style: {},
+      td: {
+        attributes: generateArray(columnLength, {}),
+        style: generateArray(columnLength, {}),
+      }
+    }
+    const newGrids = [
+      ...grids.slice(0, row + 1),
+      insertedRows,
+      ...grids.slice(row + 1)
+    ]
+    const newAttrs = [
+      ...attributes.slice(0, row + 1),
+      insertedAttrs,
+      ...attributes.slice(row + 1)
+    ]
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        grids: newGrids,
+        attributes: newAttrs,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onRemoveRow = () => {
+    const { selectedRowsNCols } = this.state
+    const row = selectedRowsNCols[0].row // by default take first item as row
+    const { block, blockProps, contentState } = this.props
+    const { grids, attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+    const newGrids = [
+      ...grids.slice(0, row),
+      ...grids.slice(row + 1)
+    ]
+    const newAttrs = [
+      ...attributes.slice(0, row),
+      ...attributes.slice(row + 1)
+    ]
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        grids: newGrids,
+        attributes: newAttrs,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onAddColumnAfter = () => {
+    const { selectedRowsNCols } = this.state
+    const columnIndex = selectedRowsNCols[0].column
+    const { block, blockProps, contentState } = this.props
+    const { grids, attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    // mutate original entity data
+    grids.forEach(row => row.splice(columnIndex + 1, 0, ''))
+    attributes.forEach(row => {
+      row.td.attributes.splice(columnIndex + 1, 0, {})
+      row.td.style.splice(columnIndex + 1, 0, {})
+    })
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        grids,
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onRemoveColumn = () => {
+    const { selectedRowsNCols } = this.state
+    const columnIndex = selectedRowsNCols[0].column
+    const { block, blockProps, contentState } = this.props
+    const { grids, attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    // mutate original entity data
+    grids.forEach(row => row.splice(columnIndex, 1))
+    attributes.forEach(row => {
+      row.td.attributes.splice(columnIndex, 1)
+      row.td.style.splice(columnIndex, 1)
+    })
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        grids,
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onWidthChange = (width: number) => {
+    const { selectedRowsNCols } = this.state
+    const { block, blockProps, contentState } = this.props
+    const { attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    if (selectedRowsNCols.length !== 0) {
+      selectedRowsNCols.forEach(({column, row}) => {
+        attributes[row].td.style[column] = {
+          ...attributes[row].td.style[column],
+          width: `${width}%`,
+        }
+      })
+    }
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onFontSizeChange = (fontSize: number) => {
+    const { selectedRowsNCols } = this.state
+    const { block, blockProps, contentState } = this.props
+    const { attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    if (selectedRowsNCols.length !== 0) {
+      selectedRowsNCols.forEach(({column, row}) => {
+        attributes[row].td.style[column] = {
+          ...attributes[row].td.style[column],
+          fontSize,
+        }
+      })
+    }
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onColorChange = (currentStyle, color) => {
+    const { selectedRowsNCols } = this.state
+    const { block, blockProps, contentState } = this.props
+    const { attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    if (selectedRowsNCols.length !== 0) {
+      selectedRowsNCols.forEach(({column, row}) => {
+        if (currentStyle === 'bgcolor') {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            backgroundColor: color,
+          }
+        } else if (currentStyle === 'color') {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            color,
+          }
+        }
+      })
+    }
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onClickOutsideHandler = () => {
+    this.setState({
+      isTableInsertOpen: false,
+    })
+  }
+
   render() {
-    const { config } = this.props
+    const {
+      config, tableSelection: { selectedRowsNCols }, translations
+    } = this.props
     const {
       isTableInsertOpen, pickCellArea: { x, y },
-      mousePositionInCellArea: { x: mouseX, y: mouseY }
+      mousePositionInCellArea: { x: mouseX, y: mouseY },
+      isColorPalate, isFontExpanded, isWidthExpanded,
     } = this.state
 
     const maxXCells = x / staticConfig.cellWidth
@@ -195,25 +419,138 @@ class Table extends Component {
       height: y + maxYCells + 1,
     }
 
-    const optionWrapperClasses = {
-      'rdw-dropdown-selectedtext': true,
-    }
-
     return (
-      <div
+      <ClickOutside
         ref='table-control'
-        className='rdw-table-insert-wrapper rdw-dropdown-wrapper'
-        aria-haspopup="true"
-        aria-label="rdw-table-insert-control"
-        onClick={this.toggleTableInsertControl}
+        onClickOutside={this.onClickOutsideHandler}
       >
-        <div className={classNames(optionWrapperClasses)}>
-          <i
-            className={config.icon}
-          />
-        </div>
+
+          <span
+            className='rdw-option-wrapper'
+            onClick={this.toggleTableInsertControl}
+          >
+            <i
+              className={config.icon}
+            />
+          </span>
+        {/* for now we can not lift table tool from createTable to Control Panle. Keep it for future
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={
+            () => {
+              if (selectedRowsNCols.length === 0) return
+              this.onAddRowAfter()
+            }
+          }
+        >
+          <i className='icon-editor-insert-row' />
+        </span>
+        <span className={classNames(optionWrapperClasses)}
+          onClick={
+            () => {
+              if (selectedRowsNCols.length === 0) return
+              this.onRemoveRow()
+            }
+          }
+        >
+          <i className='icon-editor-remove-row' />
+        </span>
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={
+            () => {
+              if (selectedRowsNCols.length === 0) return
+              this.onAddColumnAfter()
+            }
+          }
+        >
+          <i className='icon-editor-insert-column' />
+        </span>
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={
+            () => {
+              if (selectedRowsNCols.length === 0) return
+              this.onRemoveColumn()
+            }
+          }
+        >
+          <i className='icon-editor-remove-column' />
+        </span>
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={() => {
+            if (selectedRowsNCols.length === 0) return
+            this.setState({
+              isColorPalate: !isColorPalate,
+              isControlMode: !this.state.isControlMode
+            })
+          }}
+        >
+          <i className='icon-editor-color' />
+        </span>
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={() => {
+            if (selectedRowsNCols.length === 0) return
+            this.setState({
+              isFontExpanded: !isFontExpanded,
+              isControlMode: !this.state.isControlMode
+            })
+          }}
+        >
+          <i className='icon-editor-font-size-a' />
+        </span>
+        <span
+          className={classNames(optionWrapperClasses)}
+          onClick={() => {
+            if (selectedRowsNCols.length === 0) return
+            this.setState({
+              isWidthExpanded: !isWidthExpanded,
+              isControlMode: !this.state.isControlMode
+            })
+          }}
+        >
+          <i className='icon-editor-fit-to-width' />
+        </span> */}
+        { isColorPalate &&
+        <ColorPicker
+          isTablePicker={true}
+          onTablePickerChange={this.onColorChange}
+          expanded={isColorPalate}
+          translations={translations}
+          currentState={{}}
+          doCollapse={() => {}}
+          config={{
+          colors: staticConfig.table.colors
+          }}
+        />
+        }
+        { isFontExpanded &&
+        <FontSize
+          isTablePicker={true}
+          onChange={this.onFontSizeChange}
+          expanded={isFontExpanded}
+          config={{
+            options: [8,12,16,18,20,24,28,32,36,48]
+          }}
+          currentState={{}}
+        />
+        }
+        { isWidthExpanded &&
+        <FontSize
+          isTablePicker={true}
+          onChange={this.onWidthChange}
+          expanded={isWidthExpanded}
+          config={{
+            options: [10,20,25,30,40,50,60,70,75,80,90]
+          }}
+          currentState={{fontSize: '%'}}
+        />
+        }
         {isTableInsertOpen &&
           <div
+            ref='table-picker'
             className="rdw-dropdown-optionwrapper rdw-dropdown-table"
             style={{
               width: pickerCellStyle.width + staticConfig.extra,
@@ -236,7 +573,7 @@ class Table extends Component {
             <p> { `${xCells} X ${yCells}` } </p>
           </div>
         }
-      </div>
+      </ClickOutside>
     )
   }
 }

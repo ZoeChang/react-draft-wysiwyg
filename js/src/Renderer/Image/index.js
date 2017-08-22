@@ -51,7 +51,9 @@ const getImageComponent = (config) => {
     };
 
     renderAlignmentOptions(alignment): Object {
+      const { blockProps: { readOnly } } = this.props;
       return (
+        readOnly ||
         <div
           className={classNames(
             'rdw-image-alignment-options-popup',

@@ -3,6 +3,8 @@ module.exports = {
   // Generic
   'generic.add': 'Ok',
   'generic.cancel': 'Annuler',
+  'colors': 'Colors',
+  'font-size': 'Font Size',
 
   // BlockType
   'components.controls.blocktype.h1': 'Titre 1',
@@ -35,4 +37,11 @@ module.exports = {
   'components.controls.link.linkTitle': 'Titre du lien',
   'components.controls.link.linkTarget': 'Cible du lien',
   'components.controls.link.linkTargetOption': 'Ouvrir le lien dans une nouvelle fenêtre',
+
+  // Table
+  'table.remove.row': 'Remove Row',
+  'table.add.row': 'Add Row',
+  'table.remove.col': 'Remove Column',
+  'table.add.col': 'Add Column',
+  'table.col.width': 'Column Width',
 }

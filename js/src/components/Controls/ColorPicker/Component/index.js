@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { stopPropagation } from '../../../../Utils/common';
 import Option from '../../../Option';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
+import { HuePicker } from 'react-color';
 
 class LayoutComponent extends Component {
 
@@ -21,6 +22,7 @@ class LayoutComponent extends Component {
 
   state: Object = {
     currentStyle: 'color',
+    pickColor: '#36c',
   };
 
   componentWillReceiveProps(props) {
@@ -53,14 +55,14 @@ class LayoutComponent extends Component {
     }
   }
 
-  onCustomizedColor = () => {
-    console.log(';asdadsklsadlkl;as')
+  pickerChangeHandler = (color: Object) => {
+    this.setState({ pickColor: color.hex });
+    this.onChange(color.hex)
   }
 
   renderModal: Function = (): Object => {
     const {
       config: { popupClassName, colors }, currentState: { color, bgColor }, translations,
-      isTablePicker
     } = this.props;
     const { currentStyle } = this.state;
     const currentSelectedColor = (currentStyle === 'color') ? color : bgColor;
@@ -108,6 +110,17 @@ class LayoutComponent extends Component {
             )
           }
         </span>
+        <div
+          style={{
+            backgroundColor: this.state.pickColor,
+            height: '35px',
+          }}
+        />
+        <HuePicker
+          color={this.state.pickColor}
+          onChangeComplete={this.pickerChangeHandler}
+          style={{ wrap: {width: '100%'} }}
+        />
       </div>
     );
   };

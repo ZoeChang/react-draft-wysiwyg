@@ -278,7 +278,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 175px;
+  width: 320px;
   height: 175px;
   border: 1px solid #F1F1F1;
   padding: 15px;
@@ -309,7 +309,7 @@
   display: -ms-flexbox;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 60%;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   overflow: scroll;
@@ -874,15 +874,13 @@
   height: 18px;
 }
 .rdw-table-insert-wrapper {
-  max-width: 27px;
   padding: 4px;
   margin: 0;
   height: 22px;
 }
 
 .rdw-dropdown-table {
-  top: 4px;
-  left: -6px;
+  position: absolute;
 }
 
 .rdw-table-picker-cell {
@@ -1005,6 +1003,10 @@
 }
 
 .editor-table {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   border-collapse: collapse;
   border: 1px solid #111;
   width: 100%;
@@ -1018,6 +1020,7 @@
   width: 150px;
   background-color: #fff;
   border: 1px solid #111;
+  padding: 5px;
 
   cursor: text;
 }
@@ -1028,7 +1031,14 @@
 }
 
 .editor-table-active-td {
-  border: 1px double #1e88e5;
+  border: 1px double #1eaae5;
+}
+
+.editor-table-tool-wrapper button, .editor-table-tool-wrapper button:active, .editor-table-tool-wrapper button:focus, .editor-table-tool-wrapper button:hover {
+	background:none;
+	outline:none;
+  padding: 4px;
+  height: 100%;
 }
 
 @font-face {

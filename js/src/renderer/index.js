@@ -1,11 +1,12 @@
 import Embedded from './Embedded';
 import getImageComponent from '../Renderer/Image';
-import createTable from './Table/createTable';
+import Table from './Table/createTable';
 
 const getBlockRenderFunc = (config, customBlockRenderer) => {
   const {
     tableEditsChange, tableEdits, onChange: onEditorChange,
-    isReadOnly, readOnly, translations
+    isReadOnly, readOnly, translations, tableSelectionChange,
+    getTableSelection
   } = config;
   return (block) => {
     if (typeof customBlockRenderer === 'function') {
@@ -20,6 +21,9 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
         return {
           component: getImageComponent(config),
           editable: false,
+          props: {
+            readOnly
+          }
         };
       } else if (entity && entity.type === 'EMBEDDED_LINK') {
         return {
@@ -28,9 +32,11 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
         };
       } else if (entity && entity.type === 'TABLE') {
         return {
-          component: createTable(),
+          component: Table,
           editable: false,
           props: {
+            getTableSelection,
+            tableSelectionChange,
             translations,
             onEditorChange,
             editorState,
@@ -42,18 +48,6 @@ const getBlockRenderFunc = (config, customBlockRenderer) => {
             },
             onFinishEdit: (blockKey, newContentState) => {
               tableEditsChange(tableEdits.remove(blockKey))
-
-              // provided with newContentState in second argument will cause Editor/index.js
-              // to re-render. Therefore, blockRendererFn will be triggered and thus
-              // new table instance will be rendered.
-              // if (newContentState) {
-              //   const newEditorState = EditorState.createWithContent(newContentState)
-              //   onEditorChange(
-              //     EditorState.forceSelection(
-              //       newEditorState, newEditorState.getSelection()
-              //     )
-              //   )
-              // }
             },
             onRemove: () => {},
           },

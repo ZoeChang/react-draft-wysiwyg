@@ -59,7 +59,10 @@
     "draft-convert": "1.4.6",
     "draftjs-utils": "^0.7.5",
     "immutable": "^4.0.0-rc.1",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "react-click-outside": "github:tj/react-click-outside",
+    "react-color": "2.13.5",
+    "react-tooltip": "3.3.0"
   },
   "peerDependencies": {
     "draft-js": "^0.10.x",

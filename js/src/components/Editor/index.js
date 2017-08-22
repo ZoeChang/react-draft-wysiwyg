@@ -102,6 +102,10 @@ export default class WysiwygEditor extends Component {
       isHtmlMode: false,
       tableHTMLCacheString: '',
       toolbar,
+      tableSelection: {
+        blockKey: '',
+        selectedRowsNCols: [],
+      }
     };
     const {
       locale,
@@ -120,6 +124,8 @@ export default class WysiwygEditor extends Component {
       onChange: this.onChange,
       tableEditsChange: this.tableEditsChange,
       tableEdits: this.state.tableEdits,
+      tableSelectionChange: this.tableSelectionChange,
+      getTableSelection: () => this.state.tableSelection,
     }, props.customBlockRenderFunc);
     this.editorProps = this.filterEditorProps(props);
     this.customStyleMap = getCustomStyleMap();
@@ -275,7 +281,10 @@ export default class WysiwygEditor extends Component {
   getSuggestions = () => this.props.mention && this.props.mention.suggestions;
 
   isReadOnly = () => {
-    return !!this.state.tableEdits.count() || this.props.readOnly
+    return (
+      !!this.state.tableEdits.count() ||
+      this.props.readOnly
+    )
   };
 
   isImageAlignmentEnabled = () => this.state.toolbar.image.alignmentEnabled;
@@ -283,6 +292,15 @@ export default class WysiwygEditor extends Component {
   tableEditsChange = (tableEdits) => {
     this.setState({ tableEditsCount: tableEdits.count() })
     this.setState({ tableEdits });
+  }
+
+  tableSelectionChange = ({ blockKey, selectedRowsNCols }) => {
+    this.setState({
+      tableSelection: {
+        blockKey,
+        selectedRowsNCols,
+      }
+    })
   }
 
   onHtmlChange = (event) => {
@@ -430,7 +448,8 @@ export default class WysiwygEditor extends Component {
       editorState,
       editorFocused,
       toolbar,
-      isHtmlMode
+      isHtmlMode,
+      tableSelection,
      } = this.state;
     const {
       locale,
@@ -454,7 +473,8 @@ export default class WysiwygEditor extends Component {
       onChange: this.onChange,
       translations: { ...localeTranslations[locale || newLocale], ...translations },
       onToggleHtmlMode: this.onToggleHtmlMode,
-      isHtmlMode
+      isHtmlMode,
+      tableSelection,
     }
 
     return (

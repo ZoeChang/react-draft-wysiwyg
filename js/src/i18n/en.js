@@ -3,6 +3,8 @@ module.exports = {
   // Generic
   'generic.add': 'Add',
   'generic.cancel': 'Cancel',
+  'colors': 'Colors',
+  'font-size': 'Font Size',
 
   // BlockType
   'components.controls.blocktype.h1': 'H1',
@@ -34,5 +36,12 @@ module.exports = {
   // Link
   'components.controls.link.linkTitle': 'Link Title',
   'components.controls.link.linkTarget': 'Link Target',
-  'components.controls.link.linkTargetOption': 'Open link in new window'
+  'components.controls.link.linkTargetOption': 'Open link in new window',
+
+  // Table
+  'table.remove.row': 'Remove Row',
+  'table.add.row': 'Add Row',
+  'table.remove.col': 'Remove Column',
+  'table.add.col': 'Add Column',
+  'table.col.width': 'Column Width',
 };

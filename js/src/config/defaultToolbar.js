@@ -124,7 +124,7 @@ export default {
     uploadCallback: undefined,
     defaultSize: {
       height: 'auto',
-      width: 'auto',
+      width: '100%',
     },
   },
   remove: { icon: 'icon-editor-eraser', className: undefined, component: undefined },
