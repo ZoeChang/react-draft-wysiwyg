@@ -429,17 +429,23 @@ class Table extends Component {
   }
 
   onClickOutsideHandler = () => {
-    const { blockProps: { tableSelectionChange } } = this.props
+    const { block, blockProps: { tableSelectionChange, getTableSelection } } = this.props
+
+    // each table will trigger its own internal state reset.
     this.setState({
       selectedRowsNCols: [],
       isColorPalate: false,
       isFontExpanded: false,
       isWidthExpanded: false,
     })
-    tableSelectionChange({
-      blockKey: '',
-      selectedRowsNCols: [],
-    })
+
+    // tableSelectionChnage reset will only be triggered by in progress table.
+    if (getTableSelection().blockKey === block.getKey()) {
+      tableSelectionChange({
+        blockKey: '',
+        selectedRowsNCols: [],
+      })
+    }
   }
 
   onKeyDownTdInput = (event) => {

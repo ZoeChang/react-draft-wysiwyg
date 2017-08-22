@@ -1041,6 +1041,13 @@
   height: 100%;
 }
 
+.editor-table-tool-wrapper button, .editor-table-tool-wrapper button:active, .editor-table-tool-wrapper button:focus, .editor-table-tool-wrapper button:hover {
+	background:none;
+	outline:none;
+  padding: 4px;
+  height: 100%;
+}
+
 @font-face {
   font-family: "editor";
   src: url(static/media/editor.dc87fa8b.eot);

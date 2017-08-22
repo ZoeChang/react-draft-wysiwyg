@@ -19553,7 +19553,13 @@ var Table = function (_Component) {
     };
 
     _this.onClickOutsideHandler = function () {
-      var tableSelectionChange = _this.props.blockProps.tableSelectionChange;
+      var _this$props12 = _this.props,
+          block = _this$props12.block,
+          _this$props12$blockPr = _this$props12.blockProps,
+          tableSelectionChange = _this$props12$blockPr.tableSelectionChange,
+          getTableSelection = _this$props12$blockPr.getTableSelection;
+
+      // each table will trigger its own internal state reset.
 
       _this.setState({
         selectedRowsNCols: [],
@@ -19561,10 +19567,14 @@ var Table = function (_Component) {
         isFontExpanded: false,
         isWidthExpanded: false
       });
-      tableSelectionChange({
-        blockKey: '',
-        selectedRowsNCols: []
-      });
+
+      // tableSelectionChnage reset will only be triggered by in progress table.
+      if (getTableSelection().blockKey === block.getKey()) {
+        tableSelectionChange({
+          blockKey: '',
+          selectedRowsNCols: []
+        });
+      }
     };
 
     _this.onKeyDownTdInput = function (event) {
