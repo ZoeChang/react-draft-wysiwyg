@@ -114,11 +114,11 @@ class Table extends Component {
     // NOT supporting ie8
     if (this.state.isMouseInArea) {
       const { top, left } = this.refs['table-picker'].getBoundingClientRect()
-      const { screenX, screenY } = event
+      const { clientX, clientY } = event
 
       const postion = {
-        x: screenX - left,
-        y: screenY - top - staticConfig.panelHeight - 4 * staticConfig.cellHeight,
+        x: clientX - left - 1,
+        y: clientY - top - 1,
       }
       this.setState({
         mousePositionInCellArea: postion,
@@ -396,7 +396,7 @@ class Table extends Component {
 
   render() {
     const {
-      config, tableSelection: { selectedRowsNCols }, translations
+      config, translations
     } = this.props
     const {
       isTableInsertOpen, pickCellArea: { x, y },

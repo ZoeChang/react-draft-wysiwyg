@@ -25385,13 +25385,13 @@ var Table = function (_Component) {
             top = _this$refs$tablePick.top,
             left = _this$refs$tablePick.left;
 
-        var screenX = event.screenX,
-            screenY = event.screenY;
+        var clientX = event.clientX,
+            clientY = event.clientY;
 
 
         var postion = {
-          x: screenX - left,
-          y: screenY - top - staticConfig.panelHeight - 4 * staticConfig.cellHeight
+          x: clientX - left - 1,
+          y: clientY - top - 1
         };
         _this.setState({
           mousePositionInCellArea: postion
@@ -25707,7 +25707,6 @@ var Table = function (_Component) {
 
       var _props = this.props,
           config = _props.config,
-          selectedRowsNCols = _props.tableSelection.selectedRowsNCols,
           translations = _props.translations;
       var _state = this.state,
           isTableInsertOpen = _state.isTableInsertOpen,
