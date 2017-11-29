@@ -81,9 +81,9 @@ export function convertDraftToHTML(editorContent) {
       case 'IMAGE': {
         const { src, width, height } = entity.data
         return (
-          <div>
+          <span>
             <img src={src} width={width} height={height} role="presentation" />
-          </div>
+          </span>
         )
       }
 
@@ -133,13 +133,15 @@ export function convertHTMLToDraft(html) {
   const htmlToEntity = (nodeName, node) => {
     switch (nodeName) {
       case 'img': {
+        const width = node.attributes.width ? node.attributes.width.value : ''
+        const height = node.attributes.height ? node.attributes.height.value : ''
         return Entity.create(
             'IMAGE',
             'MUTABLE',
             {
               src: node.src,
-              width: node.style.width,
-              height: node.style.height,
+              width,
+              height,
             }
         )
       }
@@ -223,7 +225,7 @@ export function convertHTMLToDraft(html) {
     }
   }
 
-  const htmlToBlock = next => (nodeName, ...args) => {
+  const htmlToBlock = (nodeName, node) => {
     switch (nodeName) {
       case 'img':
         return {
@@ -232,19 +234,18 @@ export function convertHTMLToDraft(html) {
       case 'table':
         return {
           type: 'atomic',
-      };
-      default:
-        return {
-          type: 'unstyled',
         };
+      case 'p':
+        return null
+
+      default:
+        return null
     }
   }
-  htmlToBlock.__isMiddleware = true
 
   return convertFromHTML({
     htmlToStyle,
     htmlToEntity,
-    // textToEntity: (text) => {},
     htmlToBlock,
   })(html, {flat: true});
 }

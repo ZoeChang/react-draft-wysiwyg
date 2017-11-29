@@ -2,11 +2,8 @@
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { convertToHTML } from 'draft-convert';
 import { convertDraftToHTML, convertHTMLToDraft } from '../src/Utils/draftHTMLConverter';
-import draftToMarkdown from 'draftjs-to-markdown'; // eslint-disable-line import/no-extraneous-dependencies
 import {
-  convertFromHTML,
   convertToRaw,
   convertFromRaw,
   ContentState,
@@ -39,7 +36,7 @@ class TestOption2 extends Component {
       'In gravida bibendum orci, id faucibus felis molestie ac.  ' +
       'Etiam vel elit cursus, scelerisque dui quis, auctor risus.</p>' +
       '<img src="http://i.imgur.com/aMtBIep.png" /><p></p>' +
-      '<table><tbody><tr><td style="font-size:24px;background-color:#ffc107;color:#000000;">買一送一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級二</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">10</td><td style="background-color:#cddc39;color:#3f51b5;">送一百</td><td style="background-color:#cddc39;color:#3f51b5;">送一千</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">20</td><td style="background-color:#cddc39;color:#3f51b5;">送二百</td><td style="background-color:#cddc39;color:#3f51b5;">送二千</td></tr><tr><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">30</td><td style="background-color:#cddc39;color:#3f51b5;">送三百</td><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">送送千</td></tr></tbody></table>'
+      '<table><tbody><tr><td style="font-size:24px;background-color:#ffc107;color:#000000;">買一送一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級一</td><td style="font-size:24px;background-color:#ffc107;color:#000000;">等級二</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">10</td><td style="background-color:#cddc39;color:#3f51b5;">送一百</td><td style="background-color:#cddc39;color:#3f51b5;">送一千</td></tr><tr><td style="background-color:#cddc39;color:#3f51b5;">20</td><td style="background-color:#cddc39;color:#3f51b5;">送二百</td><td style="background-color:#cddc39;color:#3f51b5;">送二千</td></tr><tr><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">30</td><td style="background-color:#cddc39;color:#3f51b5;">送三百</td><td style="0:background-color;background-color:#cddc39;color:#3f51b5;">送送千</td></tr></tbody></table><p></p>'
       )
     );
 

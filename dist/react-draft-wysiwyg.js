@@ -8088,7 +8088,7 @@ function convertDraftToHTML(editorContent) {
               height = _entity$data2.height;
 
           return _react2.default.createElement(
-            'div',
+            'span',
             null,
             _react2.default.createElement('img', { src: src, width: width, height: height, role: 'presentation' })
           );
@@ -8140,10 +8140,12 @@ function convertHTMLToDraft(html) {
     switch (nodeName) {
       case 'img':
         {
+          var width = node.attributes.width ? node.attributes.width.value : '';
+          var height = node.attributes.height ? node.attributes.height.value : '';
           return _draftJs.Entity.create('IMAGE', 'MUTABLE', {
             src: node.src,
-            width: node.style.width,
-            height: node.style.height
+            width: width,
+            height: height
           });
         }
 
@@ -8220,30 +8222,27 @@ function convertHTMLToDraft(html) {
     }
   };
 
-  var htmlToBlock = function htmlToBlock(next) {
-    return function (nodeName) {
-      switch (nodeName) {
-        case 'img':
-          return {
-            type: 'atomic'
-          };
-        case 'table':
-          return {
-            type: 'atomic'
-          };
-        default:
-          return {
-            type: 'unstyled'
-          };
-      }
-    };
+  var htmlToBlock = function htmlToBlock(nodeName, node) {
+    switch (nodeName) {
+      case 'img':
+        return {
+          type: 'atomic'
+        };
+      case 'table':
+        return {
+          type: 'atomic'
+        };
+      case 'p':
+        return null;
+
+      default:
+        return null;
+    }
   };
-  htmlToBlock.__isMiddleware = true;
 
   return (0, _draftConvert.convertFromHTML)({
     htmlToStyle: htmlToStyle,
     htmlToEntity: htmlToEntity,
-    // textToEntity: (text) => {},
     htmlToBlock: htmlToBlock
   })(html, { flat: true });
 }
@@ -58358,14 +58357,21 @@ module.exports = g;
 module.exports = {
 	"_args": [
 		[
-			"draft-convert",
+			{
+				"raw": "draft-convert@1.4.6",
+				"scope": null,
+				"escapedName": "draft-convert",
+				"name": "draft-convert",
+				"rawSpec": "1.4.6",
+				"spec": "1.4.6",
+				"type": "version"
+			},
 			"/Users/groupystinks/Git/react-draft-wysiwyg"
 		]
 	],
-	"_from": "draft-convert@latest",
+	"_from": "draft-convert@1.4.6",
 	"_id": "draft-convert@1.4.6",
 	"_inCache": true,
-	"_installable": true,
 	"_location": "/draft-convert",
 	"_nodeVersion": "6.9.4",
 	"_npmOperationalInternal": {
@@ -58373,26 +58379,27 @@ module.exports = {
 		"tmp": "tmp/draft-convert-1.4.6.tgz_1493324131922_0.061073980992659926"
 	},
 	"_npmUser": {
-		"email": "ben.s.briggs@gmail.com",
-		"name": "bbriggs"
+		"name": "bbriggs",
+		"email": "ben.s.briggs@gmail.com"
 	},
 	"_npmVersion": "3.10.10",
 	"_phantomChildren": {},
 	"_requested": {
-		"name": "draft-convert",
-		"raw": "draft-convert",
-		"rawSpec": "",
+		"raw": "draft-convert@1.4.6",
 		"scope": null,
-		"spec": "latest",
-		"type": "tag"
+		"escapedName": "draft-convert",
+		"name": "draft-convert",
+		"rawSpec": "1.4.6",
+		"spec": "1.4.6",
+		"type": "version"
 	},
 	"_requiredBy": [
-		"#DEV:/"
+		"/"
 	],
 	"_resolved": "https://registry.npmjs.org/draft-convert/-/draft-convert-1.4.6.tgz",
 	"_shasum": "0f8308399db4388bea9f7b99f420c28c787f03ee",
 	"_shrinkwrap": null,
-	"_spec": "draft-convert",
+	"_spec": "draft-convert@1.4.6",
 	"_where": "/Users/groupystinks/Git/react-draft-wysiwyg",
 	"author": {
 		"name": "bbriggs@hubspot.com"
@@ -58454,12 +58461,12 @@ module.exports = {
 	"main": "lib/index.js",
 	"maintainers": [
 		{
-			"email": "ben.s.briggs@gmail.com",
-			"name": "bbriggs"
+			"name": "bbriggs",
+			"email": "ben.s.briggs@gmail.com"
 		},
 		{
-			"email": "devteam@hubspot.com",
-			"name": "hs"
+			"name": "hs",
+			"email": "devteam@hubspot.com"
 		}
 	],
 	"name": "draft-convert",
