@@ -19735,7 +19735,9 @@ var Table = function (_Component) {
                         return _this3.onClickTdEventHandler(event, rowIndex, columnIndex);
                       }
                     }, attributes[rowIndex].td.attributes[columnIndex], {
-                      style: attributes[rowIndex].td.style[columnIndex]
+                      style: _extends({
+                        color: '#000'
+                      }, attributes[rowIndex].td.style[columnIndex])
                     }),
                     isEditing && focusRow + '-' + focusColumn === rowIndex + '-' + columnIndex ? _react2.default.createElement('input', {
                       type: 'text',

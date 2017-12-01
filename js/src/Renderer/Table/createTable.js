@@ -526,7 +526,10 @@ class Table extends Component {
                         }}
                         onClick={(event) => this.onClickTdEventHandler(event, rowIndex, columnIndex)}
                         {...attributes[rowIndex].td.attributes[columnIndex]}
-                        style={attributes[rowIndex].td.style[columnIndex]}
+                        style={{
+                          color: '#000',
+                          ...attributes[rowIndex].td.style[columnIndex]
+                        }}
                       >
                         {
                           isEditing && `${focusRow}-${focusColumn}` === `${rowIndex}-${columnIndex}`
