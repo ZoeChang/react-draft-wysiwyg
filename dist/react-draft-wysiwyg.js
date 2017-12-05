@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 536);
+/******/ 	return __webpack_require__(__webpack_require__.s = 535);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -846,7 +846,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(529);
+var _styles = __webpack_require__(528);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -8116,25 +8116,32 @@ function convertDraftToHTML(editorContent) {
 }
 
 function convertHTMLToDraft(html) {
-  var htmlToStyle = function htmlToStyle(nodeName, node, currentStyle) {
+  var htmlToStyle = function htmlToStyle(next) {
+    return function (nodeName, node, currentStyle) {
 
-    if (nodeName === 'span') {
+      if (nodeName === 'span') {
 
-      if (node.style.color) {
-        currentStyle = currentStyle.add('color-' + node.style.color);
+        if (node.style.color) {
+          currentStyle = currentStyle.add('color-' + node.style.color);
+        }
+        if (node.style.fontSize) {
+          currentStyle = currentStyle.add('fontsize-' + node.style.fontSize);
+        }
+        if (node.style.backgroundColor) {
+          currentStyle = currentStyle.add('bgcolor-' + node.style.backgroundColor);
+        }
+
+        return currentStyle;
       }
-      if (node.style.fontSize) {
-        currentStyle = currentStyle.add('fontsize-' + node.style.fontSize);
-      }
-      if (node.style.backgroundColor) {
-        currentStyle = currentStyle.add('bgcolor-' + node.style.backgroundColor);
+
+      if (nodeName === 'td') {
+        return next(currentStyle);
       }
 
       return currentStyle;
-    }
-
-    return currentStyle;
+    };
   };
+  htmlToStyle.__isMiddleware = true;
 
   var htmlToEntity = function htmlToEntity(nodeName, node) {
     switch (nodeName) {
@@ -18758,7 +18765,7 @@ var _styles = __webpack_require__(508);
 
 var _styles2 = _interopRequireDefault(_styles);
 
-var _openlink = __webpack_require__(534);
+var _openlink = __webpack_require__(533);
 
 var _openlink2 = _interopRequireDefault(_openlink);
 
@@ -19179,7 +19186,7 @@ var customizedStyle = {
   tdTool: {
     position: 'absolute',
     zIndex: '100',
-    width: '350'
+    width: '450px'
   },
   tdToolWrapper: {
     display: 'flex'
@@ -19495,6 +19502,80 @@ var Table = function (_Component) {
       blockProps.onEditorChange(newEditorState);
     };
 
+    _this.onBoldChange = function () {
+      var selectedRowsNCols = _this.state.selectedRowsNCols;
+      var _this$props11 = _this.props,
+          block = _this$props11.block,
+          blockProps = _this$props11.blockProps,
+          contentState = _this$props11.contentState;
+
+      var _blockProps$entity$ge9 = blockProps.entity.getData(),
+          attributes = _blockProps$entity$ge9.attributes;
+
+      var entityKey = block.getEntityAt(0);
+
+      if (selectedRowsNCols.length !== 0) {
+        selectedRowsNCols.forEach(function (_ref4) {
+          var column = _ref4.column,
+              row = _ref4.row;
+
+          if (attributes[row].td.style[column].fontWeight === 'bold') {
+            attributes[row].td.style[column] = _extends({}, attributes[row].td.style[column], {
+              fontWeight: 'normal'
+            });
+          } else {
+            attributes[row].td.style[column] = _extends({}, attributes[row].td.style[column], {
+              fontWeight: 'bold'
+            });
+          }
+        });
+      }
+
+      var newContentState = contentState.mergeEntityData(entityKey, {
+        attributes: attributes
+      });
+
+      var newEditorState = _draftJs.EditorState.createWithContent(newContentState);
+      blockProps.onEditorChange(newEditorState);
+    };
+
+    _this.onItalicChange = function () {
+      var selectedRowsNCols = _this.state.selectedRowsNCols;
+      var _this$props12 = _this.props,
+          block = _this$props12.block,
+          blockProps = _this$props12.blockProps,
+          contentState = _this$props12.contentState;
+
+      var _blockProps$entity$ge10 = blockProps.entity.getData(),
+          attributes = _blockProps$entity$ge10.attributes;
+
+      var entityKey = block.getEntityAt(0);
+
+      if (selectedRowsNCols.length !== 0) {
+        selectedRowsNCols.forEach(function (_ref5) {
+          var column = _ref5.column,
+              row = _ref5.row;
+
+          if (attributes[row].td.style[column].fontStyle === 'italic') {
+            attributes[row].td.style[column] = _extends({}, attributes[row].td.style[column], {
+              fontStyle: 'normal'
+            });
+          } else {
+            attributes[row].td.style[column] = _extends({}, attributes[row].td.style[column], {
+              fontStyle: 'italic'
+            });
+          }
+        });
+      }
+
+      var newContentState = contentState.mergeEntityData(entityKey, {
+        attributes: attributes
+      });
+
+      var newEditorState = _draftJs.EditorState.createWithContent(newContentState);
+      blockProps.onEditorChange(newEditorState);
+    };
+
     _this.onMouseDownHandler = function (event) {
       _this.setState({
         isMouseDown: true
@@ -19507,9 +19588,9 @@ var Table = function (_Component) {
           mouseOverRow = _this$state3.mouseOverRow,
           mouseOverStartRow = _this$state3.mouseOverStartRow,
           mouseOverStartCol = _this$state3.mouseOverStartCol;
-      var _this$props11 = _this.props,
-          block = _this$props11.block,
-          tableSelectionChange = _this$props11.blockProps.tableSelectionChange;
+      var _this$props13 = _this.props,
+          block = _this$props13.block,
+          tableSelectionChange = _this$props13.blockProps.tableSelectionChange;
 
       var selectedRowsNCols = getSelectedRowsNCols(mouseOverRow, mouseOverCol, mouseOverStartRow, mouseOverStartCol);
 
@@ -19552,11 +19633,11 @@ var Table = function (_Component) {
     };
 
     _this.onClickOutsideHandler = function () {
-      var _this$props12 = _this.props,
-          block = _this$props12.block,
-          _this$props12$blockPr = _this$props12.blockProps,
-          tableSelectionChange = _this$props12$blockPr.tableSelectionChange,
-          getTableSelection = _this$props12$blockPr.getTableSelection;
+      var _this$props14 = _this.props,
+          block = _this$props14.block,
+          _this$props14$blockPr = _this$props14.blockProps,
+          tableSelectionChange = _this$props14$blockPr.tableSelectionChange,
+          getTableSelection = _this$props14$blockPr.getTableSelection;
 
       // each table will trigger its own internal state reset.
 
@@ -19614,27 +19695,6 @@ var Table = function (_Component) {
     };
     return _this;
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   const { block, blockProps: { tableSelectionChange, getTableSelection, editorState } } = nextProps
-  //   var selectionState = editorState.getSelection();
-  //   var anchorKey = selectionState.getAnchorKey();
-  //   var currentContent = editorState.getCurrentContent();
-  //   var currentContentBlock = currentContent.getBlockForKey(anchorKey);
-  //   // tableSelectionChnage reset will only be triggered by in progress table.
-  //   if (
-  //     getTableSelection().blockKey === block.getKey() &&
-  //     currentContentBlock.getKey() !== block.getKey()
-  //   ) {
-  //     this.setState({
-  //       selectedRowsNCols: [],
-  //     })
-  //     tableSelectionChange({
-  //       blockKey: '',
-  //       selectedRowsNCols: [],
-  //     })
-  //   }
-  // }
 
   _createClass(Table, [{
     key: 'componentDidUpdate',
@@ -19891,6 +19951,26 @@ var Table = function (_Component) {
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-fit-to-width'
+              })
+            ),
+            _react2.default.createElement(
+              'span',
+              {
+                className: (0, _classnames2.default)(optionWrapperClasses),
+                onClick: this.onBoldChange
+              },
+              _react2.default.createElement('i', {
+                className: 'icon-editor-bold'
+              })
+            ),
+            _react2.default.createElement(
+              'span',
+              {
+                className: (0, _classnames2.default)(optionWrapperClasses),
+                onClick: this.onItalicChange
+              },
+              _react2.default.createElement('i', {
+                className: 'icon-editor-italic'
               })
             )
           ),
@@ -23237,10 +23317,6 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(518);
-
-var _styles2 = _interopRequireDefault(_styles);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23327,7 +23403,7 @@ var _Spinner = __webpack_require__(218);
 
 var _Spinner2 = _interopRequireDefault(_Spinner);
 
-var _styles = __webpack_require__(519);
+var _styles = __webpack_require__(518);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -23804,7 +23880,7 @@ var _Option2 = _interopRequireDefault(_Option);
 
 var _Dropdown = __webpack_require__(23);
 
-var _styles = __webpack_require__(520);
+var _styles = __webpack_require__(519);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -24132,7 +24208,7 @@ var _Option2 = _interopRequireDefault(_Option);
 
 var _Dropdown = __webpack_require__(23);
 
-var _styles = __webpack_require__(521);
+var _styles = __webpack_require__(520);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -24697,7 +24773,7 @@ var _Option = __webpack_require__(12);
 
 var _Option2 = _interopRequireDefault(_Option);
 
-var _styles = __webpack_require__(522);
+var _styles = __webpack_require__(521);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -25075,7 +25151,7 @@ var _Option = __webpack_require__(12);
 
 var _Option2 = _interopRequireDefault(_Option);
 
-var _styles = __webpack_require__(523);
+var _styles = __webpack_require__(522);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -25283,7 +25359,7 @@ var _index3 = __webpack_require__(59);
 
 var _index4 = _interopRequireDefault(_index3);
 
-__webpack_require__(524);
+__webpack_require__(523);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25858,7 +25934,7 @@ var _Dropdown = __webpack_require__(23);
 
 var _toolbar = __webpack_require__(30);
 
-var _styles = __webpack_require__(525);
+var _styles = __webpack_require__(524);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -26301,7 +26377,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(526);
+var _styles = __webpack_require__(525);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -26497,7 +26573,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(527);
+var _styles = __webpack_require__(526);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -26702,7 +26778,7 @@ var _i18n = __webpack_require__(230);
 
 var _i18n2 = _interopRequireDefault(_i18n);
 
-__webpack_require__(528);
+__webpack_require__(527);
 
 __webpack_require__(506);
 
@@ -27264,7 +27340,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styles = __webpack_require__(530);
+var _styles = __webpack_require__(529);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -27467,7 +27543,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(531);
+var _styles = __webpack_require__(530);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -27588,7 +27664,7 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _styles = __webpack_require__(532);
+var _styles = __webpack_require__(531);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -27704,7 +27780,7 @@ var _suggestions = __webpack_require__(97);
 
 var _suggestions2 = _interopRequireDefault(_suggestions);
 
-var _styles = __webpack_require__(533);
+var _styles = __webpack_require__(532);
 
 var _styles2 = _interopRequireDefault(_styles);
 
@@ -49866,7 +49942,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _reactDom = __webpack_require__(535);
+var _reactDom = __webpack_require__(534);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -58591,127 +58667,120 @@ module.exports = {"rdw-history-wrapper":"rdw-history-wrapper","rdw-history-dropd
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-html-wrapper":"rdw-html-wrapper","rdw-html-icon-wrapper":"rdw-html-icon-wrapper"};
+module.exports = {"rdw-image-wrapper":"rdw-image-wrapper","rdw-image-modal":"rdw-image-modal","rdw-image-modal-header":"rdw-image-modal-header","rdw-image-modal-header-option":"rdw-image-modal-header-option","rdw-image-modal-header-label":"rdw-image-modal-header-label","rdw-image-modal-header-label-highlighted":"rdw-image-modal-header-label-highlighted","rdw-image-modal-upload-option":"rdw-image-modal-upload-option","rdw-image-modal-upload-option-highlighted":"rdw-image-modal-upload-option-highlighted","rdw-image-modal-upload-option-label":"rdw-image-modal-upload-option-label","rdw-image-modal-upload-option-input":"rdw-image-modal-upload-option-input","rdw-image-modal-url-section":"rdw-image-modal-url-section","rdw-image-modal-url-input":"rdw-image-modal-url-input","rdw-image-modal-btn-section":"rdw-image-modal-btn-section","rdw-image-modal-btn":"rdw-image-modal-btn","rdw-image-modal-spinner":"rdw-image-modal-spinner"};
 
 /***/ }),
 /* 519 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-image-wrapper":"rdw-image-wrapper","rdw-image-modal":"rdw-image-modal","rdw-image-modal-header":"rdw-image-modal-header","rdw-image-modal-header-option":"rdw-image-modal-header-option","rdw-image-modal-header-label":"rdw-image-modal-header-label","rdw-image-modal-header-label-highlighted":"rdw-image-modal-header-label-highlighted","rdw-image-modal-upload-option":"rdw-image-modal-upload-option","rdw-image-modal-upload-option-highlighted":"rdw-image-modal-upload-option-highlighted","rdw-image-modal-upload-option-label":"rdw-image-modal-upload-option-label","rdw-image-modal-upload-option-input":"rdw-image-modal-upload-option-input","rdw-image-modal-url-section":"rdw-image-modal-url-section","rdw-image-modal-url-input":"rdw-image-modal-url-input","rdw-image-modal-btn-section":"rdw-image-modal-btn-section","rdw-image-modal-btn":"rdw-image-modal-btn","rdw-image-modal-spinner":"rdw-image-modal-spinner"};
+module.exports = {"rdw-inline-wrapper":"rdw-inline-wrapper","rdw-inline-dropdown":"rdw-inline-dropdown","rdw-inline-dropdownoption":"rdw-inline-dropdownoption"};
 
 /***/ }),
 /* 520 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-inline-wrapper":"rdw-inline-wrapper","rdw-inline-dropdown":"rdw-inline-dropdown","rdw-inline-dropdownoption":"rdw-inline-dropdownoption"};
+module.exports = {"rdw-link-wrapper":"rdw-link-wrapper","rdw-link-dropdown":"rdw-link-dropdown","rdw-link-dropdownOption":"rdw-link-dropdownOption","rdw-link-dropdownPlaceholder":"rdw-link-dropdownPlaceholder","rdw-link-modal":"rdw-link-modal","rdw-link-modal-label":"rdw-link-modal-label","rdw-link-modal-input":"rdw-link-modal-input","rdw-link-modal-buttonsection":"rdw-link-modal-buttonsection","rdw-link-modal-target-option":"rdw-link-modal-target-option","rdw-link-modal-btn":"rdw-link-modal-btn","rdw-link-dropdownoption":"rdw-link-dropdownoption","rdw-history-dropdown":"rdw-history-dropdown"};
 
 /***/ }),
 /* 521 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-link-wrapper":"rdw-link-wrapper","rdw-link-dropdown":"rdw-link-dropdown","rdw-link-dropdownOption":"rdw-link-dropdownOption","rdw-link-dropdownPlaceholder":"rdw-link-dropdownPlaceholder","rdw-link-modal":"rdw-link-modal","rdw-link-modal-label":"rdw-link-modal-label","rdw-link-modal-input":"rdw-link-modal-input","rdw-link-modal-buttonsection":"rdw-link-modal-buttonsection","rdw-link-modal-target-option":"rdw-link-modal-target-option","rdw-link-modal-btn":"rdw-link-modal-btn","rdw-link-dropdownoption":"rdw-link-dropdownoption","rdw-history-dropdown":"rdw-history-dropdown"};
+module.exports = {"rdw-list-wrapper":"rdw-list-wrapper","rdw-list-dropdown":"rdw-list-dropdown","rdw-list-dropdownOption":"rdw-list-dropdownOption"};
 
 /***/ }),
 /* 522 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-list-wrapper":"rdw-list-wrapper","rdw-list-dropdown":"rdw-list-dropdown","rdw-list-dropdownOption":"rdw-list-dropdownOption"};
+module.exports = {"rdw-remove-wrapper":"rdw-remove-wrapper"};
 
 /***/ }),
 /* 523 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-remove-wrapper":"rdw-remove-wrapper"};
+module.exports = {"rdw-table-insert-wrapper":"rdw-table-insert-wrapper","rdw-dropdown-table":"rdw-dropdown-table","rdw-table-picker-cell":"rdw-table-picker-cell","rdw-table-picker-container":"rdw-table-picker-container"};
 
 /***/ }),
 /* 524 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-table-insert-wrapper":"rdw-table-insert-wrapper","rdw-dropdown-table":"rdw-dropdown-table","rdw-table-picker-cell":"rdw-table-picker-cell","rdw-table-picker-container":"rdw-table-picker-container"};
+module.exports = {"rdw-text-align-wrapper":"rdw-text-align-wrapper","rdw-text-align-dropdown":"rdw-text-align-dropdown","rdw-text-align-dropdownOption":"rdw-text-align-dropdownOption","rdw-right-aligned-block":"rdw-right-aligned-block","rdw-left-aligned-block":"rdw-left-aligned-block","rdw-center-aligned-block":"rdw-center-aligned-block","rdw-justify-aligned-block":"rdw-justify-aligned-block"};
 
 /***/ }),
 /* 525 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-text-align-wrapper":"rdw-text-align-wrapper","rdw-text-align-dropdown":"rdw-text-align-dropdown","rdw-text-align-dropdownOption":"rdw-text-align-dropdownOption","rdw-right-aligned-block":"rdw-right-aligned-block","rdw-left-aligned-block":"rdw-left-aligned-block","rdw-center-aligned-block":"rdw-center-aligned-block","rdw-justify-aligned-block":"rdw-justify-aligned-block"};
+module.exports = {"rdw-dropdown-wrapper":"rdw-dropdown-wrapper","rdw-dropdown-carettoopen":"rdw-dropdown-carettoopen","rdw-dropdown-carettoclose":"rdw-dropdown-carettoclose","rdw-dropdown-selectedtext":"rdw-dropdown-selectedtext","rdw-dropdown-optionwrapper":"rdw-dropdown-optionwrapper"};
 
 /***/ }),
 /* 526 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-dropdown-wrapper":"rdw-dropdown-wrapper","rdw-dropdown-carettoopen":"rdw-dropdown-carettoopen","rdw-dropdown-carettoclose":"rdw-dropdown-carettoclose","rdw-dropdown-selectedtext":"rdw-dropdown-selectedtext","rdw-dropdown-optionwrapper":"rdw-dropdown-optionwrapper"};
+module.exports = {"rdw-dropdownoption-default":"rdw-dropdownoption-default","rdw-dropdownoption-highlighted":"rdw-dropdownoption-highlighted","rdw-dropdownoption-active":"rdw-dropdownoption-active","rdw-dropdownoption-disabled":"rdw-dropdownoption-disabled"};
 
 /***/ }),
 /* 527 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-dropdownoption-default":"rdw-dropdownoption-default","rdw-dropdownoption-highlighted":"rdw-dropdownoption-highlighted","rdw-dropdownoption-active":"rdw-dropdownoption-active","rdw-dropdownoption-disabled":"rdw-dropdownoption-disabled"};
+module.exports = {"rdw-editor-main":"rdw-editor-main","rdw-editor-toolbar":"rdw-editor-toolbar","public-DraftStyleDefault-block":"public-DraftStyleDefault-block","rdw-editor-wrapper":"rdw-editor-wrapper","editor-invisible":"editor-invisible"};
 
 /***/ }),
 /* 528 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-editor-main":"rdw-editor-main","rdw-editor-toolbar":"rdw-editor-toolbar","public-DraftStyleDefault-block":"public-DraftStyleDefault-block","rdw-editor-wrapper":"rdw-editor-wrapper","editor-invisible":"editor-invisible"};
+module.exports = {"rdw-option-wrapper":"rdw-option-wrapper","rdw-option-active":"rdw-option-active","rdw-option-disabled":"rdw-option-disabled"};
 
 /***/ }),
 /* 529 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-option-wrapper":"rdw-option-wrapper","rdw-option-active":"rdw-option-active","rdw-option-disabled":"rdw-option-disabled"};
+module.exports = {"rdw-spinner":"rdw-spinner","sk-bouncedelay":"sk-bouncedelay","rdw-bounce1":"rdw-bounce1","rdw-bounce2":"rdw-bounce2"};
 
 /***/ }),
 /* 530 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-spinner":"rdw-spinner","sk-bouncedelay":"sk-bouncedelay","rdw-bounce1":"rdw-bounce1","rdw-bounce2":"rdw-bounce2"};
+module.exports = {"rdw-hashtag-link":"rdw-hashtag-link"};
 
 /***/ }),
 /* 531 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-hashtag-link":"rdw-hashtag-link"};
+module.exports = {"rdw-mention-link":"rdw-mention-link"};
 
 /***/ }),
 /* 532 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"rdw-mention-link":"rdw-mention-link"};
-
-/***/ }),
-/* 533 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 module.exports = {"rdw-suggestion-wrapper":"rdw-suggestion-wrapper","rdw-suggestion-dropdown":"rdw-suggestion-dropdown","rdw-suggestion-option":"rdw-suggestion-option","rdw-suggestion-option-active":"rdw-suggestion-option-active"};
 
 /***/ }),
-/* 534 */
+/* 533 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "static/media/openlink.77e4e69c.svg";
 
 /***/ }),
-/* 535 */
+/* 534 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ }),
-/* 536 */
+/* 535 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(172);

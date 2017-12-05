@@ -38,7 +38,7 @@ const customizedStyle = {
   tdTool: {
     position: 'absolute',
     zIndex: '100',
-    width: '350'
+    width: '450px'
   },
   tdToolWrapper: {
     display: 'flex',
@@ -76,27 +76,6 @@ class Table extends Component {
       toFocused: ''
     };
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   const { block, blockProps: { tableSelectionChange, getTableSelection, editorState } } = nextProps
-  //   var selectionState = editorState.getSelection();
-  //   var anchorKey = selectionState.getAnchorKey();
-  //   var currentContent = editorState.getCurrentContent();
-  //   var currentContentBlock = currentContent.getBlockForKey(anchorKey);
-  //   // tableSelectionChnage reset will only be triggered by in progress table.
-  //   if (
-  //     getTableSelection().blockKey === block.getKey() &&
-  //     currentContentBlock.getKey() !== block.getKey()
-  //   ) {
-  //     this.setState({
-  //       selectedRowsNCols: [],
-  //     })
-  //     tableSelectionChange({
-  //       blockKey: '',
-  //       selectedRowsNCols: [],
-  //     })
-  //   }
-  // }
 
   componentDidUpdate(preProps, preState) {
     const { toFocused } = this.state
@@ -362,6 +341,72 @@ class Table extends Component {
           attributes[row].td.style[column] = {
             ...attributes[row].td.style[column],
             color,
+          }
+        }
+      })
+    }
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onBoldChange = () => {
+    const { selectedRowsNCols } = this.state
+    const { block, blockProps, contentState } = this.props
+    const { attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    if (selectedRowsNCols.length !== 0) {
+      selectedRowsNCols.forEach(({column, row}) => {
+        if (attributes[row].td.style[column].fontWeight === 'bold') {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            fontWeight: 'normal',
+          }
+        } else {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            fontWeight: 'bold',
+          }
+        }
+      })
+    }
+
+    const newContentState = contentState.mergeEntityData(
+      entityKey,
+      {
+        attributes,
+      },
+    );
+
+    const newEditorState = EditorState.createWithContent(newContentState)
+    blockProps.onEditorChange(newEditorState)
+  }
+
+  onItalicChange = () => {
+    const { selectedRowsNCols } = this.state
+    const { block, blockProps, contentState } = this.props
+    const { attributes } = blockProps.entity.getData();
+    const entityKey = block.getEntityAt(0);
+
+    if (selectedRowsNCols.length !== 0) {
+      selectedRowsNCols.forEach(({column, row}) => {
+        if (attributes[row].td.style[column].fontStyle === 'italic') {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            fontStyle: 'normal',
+          }
+        } else {
+          attributes[row].td.style[column] = {
+            ...attributes[row].td.style[column],
+            fontStyle: 'italic',
           }
         }
       })
@@ -678,6 +723,22 @@ class Table extends Component {
               >
                 <i
                   className='icon-editor-fit-to-width'
+                />
+              </span>
+              <span
+                className={classNames(optionWrapperClasses)}
+                onClick={this.onBoldChange}
+              >
+                <i
+                  className='icon-editor-bold'
+                />
+              </span>
+              <span
+                className={classNames(optionWrapperClasses)}
+                onClick={this.onItalicChange}
+              >
+                <i
+                  className='icon-editor-italic'
                 />
               </span>
             </div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import styles from './styles.css'
 
 class Html extends Component {
   render() {

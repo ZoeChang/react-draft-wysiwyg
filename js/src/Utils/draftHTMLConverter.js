@@ -108,7 +108,7 @@ export function convertDraftToHTML(editorContent) {
 
 
 export function convertHTMLToDraft(html) {
-  const htmlToStyle = (nodeName, node, currentStyle) => {
+  const htmlToStyle = (next) => (nodeName, node, currentStyle) => {
 
       if (
         nodeName === 'span'
@@ -127,8 +127,13 @@ export function convertHTMLToDraft(html) {
         return currentStyle
       }
 
-      return currentStyle;
+      if (nodeName === 'td') {
+        return next(currentStyle);
+      }
+
+      return currentStyle
   };
+  htmlToStyle.__isMiddleware = true
 
   const htmlToEntity = (nodeName, node) => {
     switch (nodeName) {
