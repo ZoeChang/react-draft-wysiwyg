@@ -27,14 +27,13 @@ import { mergeRecursive } from '../../Utils/toolbar';
 import { hasProperty, filter } from '../../Utils/common';
 import Controls from '../Controls';
 import getLinkDecorator from '../../Decorators/Link';
-import getMentionDecorators from '../../decorators/Mention';
-import getHashtagDecorator from '../../decorators/HashTag';
+import getMentionDecorators from '../../Decorators/Mention';
+import getHashtagDecorator from '../../Decorators/HashTag';
 import getBlockRenderFunc from '../../Renderer';
 import extendedBlockRenderMap from '../../CustomBlock';
 import defaultToolbar from '../../config/defaultToolbar';
 import localeTranslations from '../../i18n';
 import './styles.css';
-import '../../../../css/Draft.css';
 
 export default class WysiwygEditor extends Component {
 
