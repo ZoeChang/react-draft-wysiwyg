@@ -286,7 +286,7 @@ var WysiwygEditor = function (_Component) {
             onDownArrow: this.onUpDownArrow,
             editorState: editorState,
             onChange: this.onChange,
-            blockStyleFn: _BlockStyle.blockStyleFn,
+            blockStyleFn: _BlockStyle.blockStyleFn.bind(null, editorState),
             customStyleMap: (0, _draftjsUtils.getCustomStyleMap)(),
             handleReturn: this.handleReturn,
             blockRendererFn: this.blockRendererFn,

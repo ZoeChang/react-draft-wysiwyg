@@ -529,7 +529,7 @@ export default class WysiwygEditor extends Component {
             onDownArrow={this.onUpDownArrow}
             editorState={editorState}
             onChange={this.onChange}
-            blockStyleFn={blockStyleFn}
+            blockStyleFn={blockStyleFn.bind(null, editorState)}
             customStyleMap={getCustomStyleMap()}
             handleReturn={this.handleReturn}
             blockRendererFn={this.blockRendererFn}

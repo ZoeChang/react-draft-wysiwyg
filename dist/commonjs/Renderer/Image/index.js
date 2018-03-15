@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -38,6 +40,31 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // eslint-disable-line no-unused-vars
 
+// function parseClassname(classname = 'imageAtom-undefined-w:-h:') {
+//   const [name, alignment, widthsStr, heightStr] = classname.split('-')
+//   const width = widthsStr.split(':')[1]
+//   const height = heightStr.split(':')[1]
+//   return { width, height, alignment }
+// }
+
+var alignmentStyle = {
+  default: {
+    cursor: 'default',
+    position: 'relative'
+  },
+  center: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block'
+  },
+  left: {
+    float: 'left'
+  },
+  right: {
+    float: 'right'
+  }
+};
+
 var getImageComponent = function getImageComponent(config) {
   var _class, _temp2;
 
@@ -62,7 +89,7 @@ var getImageComponent = function getImageComponent(config) {
       }, _this.setEntityAlignmentRight = function () {
         _this.setEntityAlignment('right');
       }, _this.setEntityAlignmentCenter = function () {
-        _this.setEntityAlignment('none');
+        _this.setEntityAlignment('center');
       }, _this.setEntityAlignment = function (alignment) {
         var _this$props = _this.props,
             block = _this$props.block,
@@ -83,6 +110,48 @@ var getImageComponent = function getImageComponent(config) {
     }
 
     _createClass(Image, [{
+      key: 'componentDidMount',
+      value: function componentDidMount() {
+        // dom manipulation of inline width and height
+        var imageList = document.querySelectorAll('figure[class^="imageAtom"]');
+        var nextElementSiblingKey = '';
+        var prevElementSiblingKey = '';
+        imageList.forEach(function (node, index) {
+          prevElementSiblingKey = node.previousElementSibling.dataset.offsetKey;
+          if (prevElementSiblingKey === nextElementSiblingKey) {
+            node.previousElementSibling.style.display = 'none';
+          }
+          nextElementSiblingKey = node.nextElementSibling.dataset.offsetKey;
+          if (nextElementSiblingKey === prevElementSiblingKey) {
+            node.nextElementSibling.style.display = 'none';
+          }
+
+          // const { width, height, alignment } = parseClassname(node.className)
+          // node.style.width = width
+          // node.style.height = height
+          // if (alignment === 'left' | alignment === 'right') {
+          //   node.style.float = alignment
+          // } else {
+          //   node.style.float = 'none'
+          // }
+        });
+      }
+
+      // componentDidUpdate() {
+      //   const imageList = document.querySelectorAll('figure[class^="imageAtom"]')
+      //   imageList.forEach(node => {
+      //     const { width, height, alignment } = parseClassname(node.className)
+      //     node.style.width = width
+      //     node.style.height = height
+      //     if (alignment === 'left' | alignment === 'right') {
+      //       node.style.float = alignment
+      //     } else {
+      //       node.style.float = 'none'
+      //     }
+      //   })
+      // }
+
+    }, {
       key: 'renderAlignmentOptions',
       value: function renderAlignmentOptions(alignment) {
         var readOnly = this.props.blockProps.readOnly;
@@ -134,34 +203,42 @@ var getImageComponent = function getImageComponent(config) {
 
         var _entity$getData = entity.getData(),
             src = _entity$getData.src,
-            alignment = _entity$getData.alignment,
+            _entity$getData$align = _entity$getData.alignment,
+            alignment = _entity$getData$align === undefined ? 'center' : _entity$getData$align,
             height = _entity$getData.height,
             width = _entity$getData.width;
 
-        return _react2.default.createElement(
-          'span',
-          {
-            onMouseEnter: this.toggleHovered,
-            onMouseLeave: this.toggleHovered,
-            className: (0, _classnames2.default)('rdw-image-alignment', {
-              'rdw-image-left': alignment === 'left',
-              'rdw-image-right': alignment === 'right',
-              'rdw-image-center': !alignment || alignment === 'none'
-            })
-          },
+        return (
+          // <span
+          //   onClick={this.toggleHovered}
+          //   className={classNames(
+          //     'rdw-image-alignment',
+          //     {
+          //       'rdw-image-left': alignment === 'left',
+          //       'rdw-image-right': alignment === 'right',
+          //       'rdw-image-center': !alignment || alignment === 'none',
+          //     }
+          //   )}
+          // >
+          //   <span 
+          //     className="rdw-image-imagewrapper"
+          //   >
           _react2.default.createElement(
             'span',
-            { className: 'rdw-image-imagewrapper' },
+            null,
             _react2.default.createElement('img', {
-              src: src,
-              alt: '',
-              style: {
+              onClick: this.toggleHovered,
+              style: _extends({}, alignmentStyle.default, alignmentStyle[alignment], {
                 height: height,
                 width: width
-              }
+              }),
+              src: src,
+              alt: ''
             }),
             !isReadOnly() && hovered && isImageAlignmentEnabled() ? this.renderAlignmentOptions(alignment) : undefined
           )
+          // </span>
+
         );
       }
     }]);

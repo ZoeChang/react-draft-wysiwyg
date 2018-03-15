@@ -101,7 +101,7 @@ var ImageControl = function (_Component) {
         expanded: expanded,
         onExpandEvent: this.onExpandEvent,
         doExpand: this.doExpand,
-        doCollpase: this.doCollpase
+        doCollapse: this.doCollapse
       });
     }
   }]);

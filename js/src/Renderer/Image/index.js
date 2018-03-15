@@ -5,6 +5,31 @@ import classNames from 'classnames';
 import Option from '../../components/Option';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
 
+// function parseClassname(classname = 'imageAtom-undefined-w:-h:') {
+//   const [name, alignment, widthsStr, heightStr] = classname.split('-')
+//   const width = widthsStr.split(':')[1]
+//   const height = heightStr.split(':')[1]
+//   return { width, height, alignment }
+// }
+
+const alignmentStyle = {
+  default: {
+    cursor: 'default',
+    position: 'relative',
+  },
+  center: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
+  },
+  left: {
+    float: 'left',
+  },
+  right: {
+    float: 'right',
+  }
+}
+
 const getImageComponent = (config) => {
 
   return class Image extends Component {
@@ -18,6 +43,48 @@ const getImageComponent = (config) => {
       hovered: false,
     };
 
+    componentDidMount() {
+      // dom manipulation of inline width and height
+      const imageList = document.querySelectorAll('figure[class^="imageAtom"]')
+      let nextElementSiblingKey = ''
+      let prevElementSiblingKey = ''
+      imageList.forEach((node, index) => {
+        prevElementSiblingKey = node.previousElementSibling.dataset.offsetKey
+        if (
+          prevElementSiblingKey === nextElementSiblingKey
+        ) {
+          node.previousElementSibling.style.display = 'none'
+        }
+        nextElementSiblingKey = node.nextElementSibling.dataset.offsetKey
+        if (nextElementSiblingKey === prevElementSiblingKey) {
+          node.nextElementSibling.style.display = 'none'
+        }
+
+        // const { width, height, alignment } = parseClassname(node.className)
+        // node.style.width = width
+        // node.style.height = height
+        // if (alignment === 'left' | alignment === 'right') {
+        //   node.style.float = alignment
+        // } else {
+        //   node.style.float = 'none'
+        // }
+      })
+    }
+
+    // componentDidUpdate() {
+    //   const imageList = document.querySelectorAll('figure[class^="imageAtom"]')
+    //   imageList.forEach(node => {
+    //     const { width, height, alignment } = parseClassname(node.className)
+    //     node.style.width = width
+    //     node.style.height = height
+    //     if (alignment === 'left' | alignment === 'right') {
+    //       node.style.float = alignment
+    //     } else {
+    //       node.style.float = 'none'
+    //     }
+    //   })
+    // }
+
     setEntityAlignmentLeft: Function = (): void => {
       this.setEntityAlignment('left');
     };
@@ -27,7 +94,7 @@ const getImageComponent = (config) => {
     };
 
     setEntityAlignmentCenter: Function = (): void => {
-      this.setEntityAlignment('none');
+      this.setEntityAlignment('center');
     };
 
     setEntityAlignment: Function = (alignment): void => {
@@ -89,29 +156,34 @@ const getImageComponent = (config) => {
       const { hovered } = this.state;
       const { isReadOnly, isImageAlignmentEnabled } = config;
       const entity = contentState.getEntity(block.getEntityAt(0));
-      const { src, alignment, height, width } = entity.getData();
+      const { src, alignment = 'center', height, width } = entity.getData();
 
       return (
-        <span
-          onMouseEnter={this.toggleHovered}
-          onMouseLeave={this.toggleHovered}
-          className={classNames(
-            'rdw-image-alignment',
-            {
-              'rdw-image-left': alignment === 'left',
-              'rdw-image-right': alignment === 'right',
-              'rdw-image-center': !alignment || alignment === 'none',
-            }
-          )}
-        >
-          <span className="rdw-image-imagewrapper">
+        // <span
+        //   onClick={this.toggleHovered}
+        //   className={classNames(
+        //     'rdw-image-alignment',
+        //     {
+        //       'rdw-image-left': alignment === 'left',
+        //       'rdw-image-right': alignment === 'right',
+        //       'rdw-image-center': !alignment || alignment === 'none',
+        //     }
+        //   )}
+        // >
+        //   <span 
+        //     className="rdw-image-imagewrapper"
+        //   >
+        <span>
             <img
-              src={src}
-              alt=""
+              onClick={this.toggleHovered}
               style={{
+                ...alignmentStyle.default,
+                ...alignmentStyle[alignment],
                 height,
                 width,
               }}
+              src={src}
+              alt=""
             />
             {
               !isReadOnly() && hovered && isImageAlignmentEnabled() ?
@@ -119,8 +191,8 @@ const getImageComponent = (config) => {
                 :
                 undefined
             }
-          </span>
         </span>
+        // </span>
       );
     }
   }
