@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { ContentState, EditorState } from 'draft-js'
 import { generateArray } from '../../Utils/common'
