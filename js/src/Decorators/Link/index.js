@@ -45,17 +45,23 @@ function getLinkComponent(config) {
       });
     };
 
+    onClickLink = (e) => {
+      const { entityKey, contentState } = this.props;
+      const { url, target } = contentState.getEntity(entityKey).getData();
+      window.open(url, target);
+    }
+
     render() {
-      const { children, entityKey, contentState } = this.props;
-      const { url, title, targetOption } = contentState.getEntity(entityKey).getData();
+      const { children } = this.props;
       const { showPopOver } = this.state;
       return (
         <span
-          className="rdw-link-decorator-wrapper"
+          className="rdw-link-decorator-wrapper editor-anchor"
           onMouseEnter={this.toggleShowPopOver}
           onMouseLeave={this.toggleShowPopOver}
+          onClick={this.onClickLink}
         >
-          <a href={url} target={targetOption}>{children}</a>
+          {children}
           {showPopOver && showOpenOptionOnHover ?
             <img
               src={openlink}

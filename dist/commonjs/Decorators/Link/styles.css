@@ -8,3 +8,9 @@
   cursor: pointer;
   background-color: white;
 }
+
+.editor-anchor {
+  color: #01b1f0;
+  cursor: pointer;
+  text-decoration: underline;
+}

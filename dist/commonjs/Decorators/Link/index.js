@@ -75,36 +75,34 @@ function getLinkComponent(config) {
         _this.setState({
           showPopOver: showPopOver
         });
+      }, _this.onClickLink = function (e) {
+        var _this$props2 = _this.props,
+            entityKey = _this$props2.entityKey,
+            contentState = _this$props2.contentState;
+
+        var _contentState$getEnti2 = contentState.getEntity(entityKey).getData(),
+            url = _contentState$getEnti2.url,
+            target = _contentState$getEnti2.target;
+
+        window.open(url, target);
       }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Link, [{
       key: 'render',
       value: function render() {
-        var _props = this.props,
-            children = _props.children,
-            entityKey = _props.entityKey,
-            contentState = _props.contentState;
-
-        var _contentState$getEnti2 = contentState.getEntity(entityKey).getData(),
-            url = _contentState$getEnti2.url,
-            title = _contentState$getEnti2.title,
-            targetOption = _contentState$getEnti2.targetOption;
-
+        var children = this.props.children;
         var showPopOver = this.state.showPopOver;
 
         return _react2.default.createElement(
           'span',
           {
-            className: 'rdw-link-decorator-wrapper',
+            className: 'rdw-link-decorator-wrapper editor-anchor',
             onMouseEnter: this.toggleShowPopOver,
-            onMouseLeave: this.toggleShowPopOver
+            onMouseLeave: this.toggleShowPopOver,
+            onClick: this.onClickLink
           },
-          _react2.default.createElement(
-            'a',
-            { href: url, target: targetOption },
-            children
-          ),
+          children,
           showPopOver && showOpenOptionOnHover ? _react2.default.createElement('img', {
             src: _openlink2.default,
             alt: '',

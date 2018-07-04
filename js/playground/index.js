@@ -26,7 +26,7 @@ class TestOption2 extends Component {
 
   const htmlToDraftContentState = convertToRaw(
     convertHTMLToDraft('<p><span style="color:rgb(97,189,109);font-size:18px;background-color:rgb(247,218,100)">Lorem</span> ' +
-      '<a href="goolge.com" target="_self">dolor</a> sit amet, consectetur adipiscing elit. Mauris tortor felis, volutpat sit amet ' +
+      '<a href="https://www.google.com.sg/" target="_self">dolor</a> sit amet, consectetur adipiscing elit. Mauris tortor felis, volutpat sit amet ' +
       'maximus nec, tempus auctor diam. Nunc odio elit,  ' +
       'commodo quis dolor in, sagittis scelerisque nibh. ' +
       'Suspendisse consequat, sapien sit amet pulvinar  ' +
