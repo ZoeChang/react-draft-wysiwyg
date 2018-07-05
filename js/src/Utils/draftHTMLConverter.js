@@ -4,11 +4,29 @@ import { convertToHTML, convertFromHTML } from 'draft-convert'
 import { trtdAttrToReactMap } from './htmlAttrToReactMap'
 import deleteEmptyValue from './deleteEmptyValue'
 
+const superscriptStyle = {
+  fontSize: '11px',
+  position: 'relative',
+  top: '-8px',
+  display: 'inline-flex',
+}
+
+const subscriptStyle = {
+  fontSize: '11px',
+  position: 'relative',
+  bottom: '-8px',
+  display: 'inline-flex',
+}
+
+const SUBSCRIPT = 'SUBSCRIPT';
+const SUPERSCRIPT = 'SUPERSCRIPT';
+
 export function convertDraftToHTML(editorContent) {
   const styleToHTML = (style) => {
     const colorPattern = /^color/
     const bgColorPattern = /^bgcolor/
     const fontsizePattern = /^fontsize/
+    const strikeThroughPattern = /^STRIKETHROUGH/
 
     if (colorPattern.test(style)) {
       const colorStyle = style.replace('color-', '')
@@ -29,6 +47,19 @@ export function convertDraftToHTML(editorContent) {
       return (
         <span style={{fontSize: fontSize}} />
       )
+    }
+
+
+    if (strikeThroughPattern.test(style)) {
+      return <span style={{ textDecoration: 'line-through' }} />
+    }
+
+    if (style === SUBSCRIPT) {
+      return <span style={subscriptStyle} data-type={SUBSCRIPT} /> 
+    }
+
+    if (style === SUPERSCRIPT) {
+      return <span style={superscriptStyle} data-type={SUPERSCRIPT} /> 
     }
 
     return;
@@ -122,6 +153,13 @@ export function convertHTMLToDraft(html) {
         }
         if (node.style.backgroundColor) {
           currentStyle = currentStyle.add(`bgcolor-${node.style.backgroundColor}`);
+        }
+        if (node.dataset && node.dataset.type === SUPERSCRIPT) {
+          currentStyle = currentStyle.add(SUPERSCRIPT)
+        }
+
+        if (node.dataset && node.dataset.type === SUBSCRIPT) {
+          currentStyle = currentStyle.add(SUBSCRIPT)
         }
 
         return currentStyle

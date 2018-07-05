@@ -25,11 +25,29 @@ var _deleteEmptyValue2 = _interopRequireDefault(_deleteEmptyValue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var superscriptStyle = {
+  fontSize: '11px',
+  position: 'relative',
+  top: '-8px',
+  display: 'inline-flex'
+};
+
+var subscriptStyle = {
+  fontSize: '11px',
+  position: 'relative',
+  bottom: '-8px',
+  display: 'inline-flex'
+};
+
+var SUBSCRIPT = 'SUBSCRIPT';
+var SUPERSCRIPT = 'SUPERSCRIPT';
+
 function convertDraftToHTML(editorContent) {
   var styleToHTML = function styleToHTML(style) {
     var colorPattern = /^color/;
     var bgColorPattern = /^bgcolor/;
     var fontsizePattern = /^fontsize/;
+    var strikeThroughPattern = /^STRIKETHROUGH/;
 
     if (colorPattern.test(style)) {
       var colorStyle = style.replace('color-', '');
@@ -44,6 +62,18 @@ function convertDraftToHTML(editorContent) {
     if (fontsizePattern.test(style)) {
       var fontSize = style.split('-')[1] || '16';
       return _react2.default.createElement('span', { style: { fontSize: fontSize } });
+    }
+
+    if (strikeThroughPattern.test(style)) {
+      return _react2.default.createElement('span', { style: { textDecoration: 'line-through' } });
+    }
+
+    if (style === SUBSCRIPT) {
+      return _react2.default.createElement('span', { style: subscriptStyle, 'data-type': SUBSCRIPT });
+    }
+
+    if (style === SUPERSCRIPT) {
+      return _react2.default.createElement('span', { style: superscriptStyle, 'data-type': SUPERSCRIPT });
     }
 
     return;
@@ -150,6 +180,13 @@ function convertHTMLToDraft(html) {
         }
         if (node.style.backgroundColor) {
           currentStyle = currentStyle.add('bgcolor-' + node.style.backgroundColor);
+        }
+        if (node.dataset && node.dataset.type === SUPERSCRIPT) {
+          currentStyle = currentStyle.add(SUPERSCRIPT);
+        }
+
+        if (node.dataset && node.dataset.type === SUBSCRIPT) {
+          currentStyle = currentStyle.add(SUBSCRIPT);
         }
 
         return currentStyle;
