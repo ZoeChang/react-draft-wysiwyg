@@ -45,7 +45,7 @@ export function convertDraftToHTML(editorContent) {
     if (fontsizePattern.test(style)) {
       const fontSize = style.split('-')[1] || '16'
       return (
-        <span style={{fontSize: fontSize}} />
+        <span style={{fontSize: `${fontSize}px`}} />
       )
     }
 

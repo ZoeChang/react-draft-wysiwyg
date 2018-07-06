@@ -61,7 +61,7 @@ function convertDraftToHTML(editorContent) {
 
     if (fontsizePattern.test(style)) {
       var fontSize = style.split('-')[1] || '16';
-      return _react2.default.createElement('span', { style: { fontSize: fontSize } });
+      return _react2.default.createElement('span', { style: { fontSize: fontSize + 'px' } });
     }
 
     if (strikeThroughPattern.test(style)) {
