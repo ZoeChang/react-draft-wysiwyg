@@ -149,7 +149,7 @@ export function convertHTMLToDraft(html) {
           currentStyle = currentStyle.add(`color-${node.style.color}`);
         }
         if (node.style.fontSize) {
-          currentStyle = currentStyle.add(`fontsize-${node.style.fontSize}`);
+          currentStyle = currentStyle.add(`fontsize-${node.style.fontSize.replace('px', '')}`);
         }
         if (node.style.backgroundColor) {
           currentStyle = currentStyle.add(`bgcolor-${node.style.backgroundColor}`);
