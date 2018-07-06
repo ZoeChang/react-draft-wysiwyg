@@ -629,6 +629,7 @@ class Table extends Component {
                   }
                 }
                 data-tip={translations['table.add.row']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-insert-row'
@@ -642,6 +643,7 @@ class Table extends Component {
                   }
                 }
                 data-tip={translations['table.remove.row']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-remove-row'
@@ -656,6 +658,7 @@ class Table extends Component {
                   }
                 }
                 data-tip={translations['table.add.col']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-insert-column'
@@ -670,6 +673,7 @@ class Table extends Component {
                   }
                 }
                 data-tip={translations['table.remove.col']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-remove-column'
@@ -687,6 +691,7 @@ class Table extends Component {
                   })
                 }}
                 data-tip={translations['colors']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-color'
@@ -704,6 +709,7 @@ class Table extends Component {
                   })
                 }}
                 data-tip={translations['font-size']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-font-size-a'
@@ -721,6 +727,7 @@ class Table extends Component {
                   })
                 }}
                 data-tip={translations['table.col.width']}
+                data-for='table-tooltip'
               >
                 <i
                   className='icon-editor-fit-to-width'
@@ -743,7 +750,6 @@ class Table extends Component {
                 />
               </span>
             </div>
-            <ReactTooltip />
           </div>
         }
         { isColorPalate &&
@@ -781,6 +787,11 @@ class Table extends Component {
           currentState={{fontSize: '%'}}
         />
         }
+        <ReactTooltip
+          id='table-tooltip'
+          // we toggle key while table is selected or not selected
+          key={!selectedRowsNCols.length}
+        />
       </ClickOutside>
     );
   }
