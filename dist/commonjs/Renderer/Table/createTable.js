@@ -747,7 +747,8 @@ var Table = function (_Component) {
                   if (selectedRowsNCols.length === 0) return;
                   _this3.onAddRowAfter();
                 },
-                'data-tip': translations['table.add.row']
+                'data-tip': translations['table.add.row'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-insert-row'
@@ -760,7 +761,8 @@ var Table = function (_Component) {
                   if (selectedRowsNCols.length === 0 || selectedRowsNCols.length > 1) return;
                   _this3.onRemoveRow();
                 },
-                'data-tip': translations['table.remove.row']
+                'data-tip': translations['table.remove.row'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-remove-row'
@@ -774,7 +776,8 @@ var Table = function (_Component) {
                   if (selectedRowsNCols.length === 0) return;
                   _this3.onAddColumnAfter();
                 },
-                'data-tip': translations['table.add.col']
+                'data-tip': translations['table.add.col'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-insert-column'
@@ -788,7 +791,8 @@ var Table = function (_Component) {
                   if (selectedRowsNCols.length === 0 || selectedRowsNCols.length > 1) return;
                   _this3.onRemoveColumn();
                 },
-                'data-tip': translations['table.remove.col']
+                'data-tip': translations['table.remove.col'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-remove-column'
@@ -807,7 +811,8 @@ var Table = function (_Component) {
                     isWidthExpanded: false
                   });
                 },
-                'data-tip': translations['colors']
+                'data-tip': translations['colors'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-color'
@@ -826,7 +831,8 @@ var Table = function (_Component) {
                     isWidthExpanded: false
                   });
                 },
-                'data-tip': translations['font-size']
+                'data-tip': translations['font-size'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-font-size-a'
@@ -845,7 +851,8 @@ var Table = function (_Component) {
                     isFontExpanded: false
                   });
                 },
-                'data-tip': translations['table.col.width']
+                'data-tip': translations['table.col.width'],
+                'data-for': 'table-tooltip'
               },
               _react2.default.createElement('i', {
                 className: 'icon-editor-fit-to-width'
@@ -871,8 +878,7 @@ var Table = function (_Component) {
                 className: 'icon-editor-italic'
               })
             )
-          ),
-          _react2.default.createElement(_reactTooltip2.default, null)
+          )
         ),
         isColorPalate && _react2.default.createElement(_index2.default, {
           isTablePicker: true,
@@ -902,6 +908,11 @@ var Table = function (_Component) {
             options: [10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90]
           },
           currentState: { fontSize: '%' }
+        }),
+        _react2.default.createElement(_reactTooltip2.default, {
+          id: 'table-tooltip'
+          // we toggle key while table is selected or not selected
+          , key: !selectedRowsNCols.length
         })
       );
     }
