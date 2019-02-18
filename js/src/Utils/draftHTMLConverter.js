@@ -18,6 +18,24 @@ const subscriptStyle = {
   display: 'inline-flex',
 }
 
+const imgStyle = {
+  center: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block',
+  },
+  left: {
+    marginLeft: '0',
+    marginRight: 'auto',
+    display: 'block',
+  },
+  right: {
+    marginLeft: 'auto',
+    marginRight: '0',
+    display: 'block',
+  }
+}
+
 const SUBSCRIPT = 'SUBSCRIPT';
 const SUPERSCRIPT = 'SUPERSCRIPT';
 
@@ -110,10 +128,10 @@ export function convertDraftToHTML(editorContent) {
       }
 
       case 'IMAGE': {
-        const { src, width, height } = entity.data
+        const { src, width, height, alignment = 'center' } = entity.data
         return (
           <span>
-            <img src={src} width={width} height={height} role="presentation" />
+            <img src={src} width={width} height={height} role="presentation" style={imgStyle[alignment]} />
           </span>
         )
       }
