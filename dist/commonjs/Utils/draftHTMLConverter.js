@@ -39,6 +39,24 @@ var subscriptStyle = {
   display: 'inline-flex'
 };
 
+var imgStyle = {
+  center: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'block'
+  },
+  left: {
+    marginLeft: '0',
+    marginRight: 'auto',
+    display: 'block'
+  },
+  right: {
+    marginLeft: 'auto',
+    marginRight: '0',
+    display: 'block'
+  }
+};
+
 var SUBSCRIPT = 'SUBSCRIPT';
 var SUPERSCRIPT = 'SUPERSCRIPT';
 
@@ -136,12 +154,14 @@ function convertDraftToHTML(editorContent) {
           var _entity$data2 = entity.data,
               src = _entity$data2.src,
               width = _entity$data2.width,
-              height = _entity$data2.height;
+              height = _entity$data2.height,
+              _entity$data2$alignme = _entity$data2.alignment,
+              alignment = _entity$data2$alignme === undefined ? 'center' : _entity$data2$alignme;
 
           return _react2.default.createElement(
             'span',
             null,
-            _react2.default.createElement('img', { src: src, width: width, height: height, role: 'presentation' })
+            _react2.default.createElement('img', { src: src, width: width, height: height, role: 'presentation', style: imgStyle[alignment] })
           );
         }
 
